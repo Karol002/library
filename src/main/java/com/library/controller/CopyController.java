@@ -1,9 +1,13 @@
 package com.library.controller;
 
+import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
 import com.library.mapper.CopyMapper;
 import com.library.service.CopyService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,16 +20,17 @@ public class CopyController {
     private final CopyMapper copyMapper;
 
     @GetMapping
-    public List<CopyDto> getCopies() {
-        throw new IllegalArgumentException("Not implementet yet!");
+    public ResponseEntity<List<CopyDto>> getCopies() {
+        List<Copy> copies = copyService.getCopies();
+        return ResponseEntity.ok(copyMapper.mapToCopyDtoList(copies));
     }
 
     @GetMapping(value = "{id}")
-    public CopyDto getCopies(@PathVariable Long id) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ResponseEntity<CopyDto> getCopy(@PathVariable Long id) {
+        return new ResponseEntity<>(copyMapper.mapToCopyDto(copyService.getCopy(id)), HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "{id}")
     public void deleteCopy(Long id) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }

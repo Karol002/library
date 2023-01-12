@@ -38,7 +38,7 @@ public class TitleController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     public ResponseEntity<TitleDto> updateTitle(@RequestBody TitleDto titleDto) {
         Title title = titleMapper.mapToTitle(titleDto);
         Title savedTitle = titleService.saveTitle(title);
@@ -46,8 +46,9 @@ public class TitleController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createTitle(@RequestBody TitleDto titleDto) {
+    public ResponseEntity<Void> createTitle(@RequestBody TitleDto titleDto) {
         Title title = titleMapper.mapToTitle(titleDto);
         titleService.saveTitle(title);
+        return ResponseEntity.ok().build();
     }
 }

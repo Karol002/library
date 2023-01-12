@@ -15,7 +15,6 @@ import java.time.LocalDate;
 public class Borrow {
     @Id
     @GeneratedValue
-    @NotNull
     @Column(name="ID", unique=true)
     private Long id;
 
@@ -32,11 +31,4 @@ public class Borrow {
     @ManyToOne
     @JoinColumn(name = "READER_ID")
     private Reader reader;
-
-    public Borrow(LocalDate borrowDate, LocalDate returnDate, Copy copy, Reader reader) {
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-        this.copy = copy;
-        this.reader = reader;
-    }
 }

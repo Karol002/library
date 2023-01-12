@@ -17,6 +17,7 @@ public class BorrowMapper {
 
     public Borrow mapToBorrow(BorrowDto borrowDto) {
         return new Borrow(
+                borrowDto.getId(),
                 borrowDto.getBorrowDate(),
                 borrowDto.getReturnDate(),
                 copyService.getCopy(borrowDto.getCopyId()),

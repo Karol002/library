@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.controller.exception.BorrowNotFoundException;
 import com.library.domain.Borrow;
 import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class BorrowService {
         return borrowRepository.findAll();
     }
 
-    public Borrow getBorrow(Long id) {
-        return borrowRepository.findById(id).get();
+    public Borrow getBorrow(Long id) throws BorrowNotFoundException {
+        return borrowRepository.findById(id).orElseThrow(BorrowNotFoundException::new);
     }
 
     public void deleteBorrow(Long id) {

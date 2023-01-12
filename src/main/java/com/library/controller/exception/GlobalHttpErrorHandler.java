@@ -14,4 +14,9 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleTitleNotFoundException(TitleNotFoundException exception) {
         return new ResponseEntity<>("Title with given id doesn't exist", HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(BorrowNotFoundException.class)
+    public ResponseEntity<Object> handleBorrowNotFoundException(BorrowNotFoundException exception) {
+        return new ResponseEntity<>("Borrow with given id doesn't exist", HttpStatus.BAD_REQUEST);
+    }
 }

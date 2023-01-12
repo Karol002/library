@@ -27,10 +27,4 @@ public class Title {
 
     @Column(name = "PUBLICATION_DATE")
     private LocalDate publicationDate;
-
-    public Title(String title, String author, LocalDate publicationDate) {
-        this.title = title;
-        this.author = author;
-        this.publicationDate = publicationDate;
-    }
 }

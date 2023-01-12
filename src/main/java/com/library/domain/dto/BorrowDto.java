@@ -1,7 +1,5 @@
 package com.library.domain.dto;
 
-import com.library.domain.Copy;
-import com.library.domain.Reader;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
