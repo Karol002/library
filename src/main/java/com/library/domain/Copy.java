@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -29,4 +29,9 @@ public class Copy {
     @JoinColumn(name = "BORROW_ID")
     @Transient
     private Borrow borrow;
+
+    public Copy(String status, Title title) {
+        this.status = status;
+        this.title = title;
+    }
 }

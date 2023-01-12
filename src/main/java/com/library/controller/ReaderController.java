@@ -1,36 +1,38 @@
 package com.library.controller;
 
+import com.library.domain.dto.ReaderDto;
 import com.library.domain.dto.TitleDto;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/library/titles")
-public class TitleController {
+@RequestMapping("/library/readers")
+public class ReaderController {
 
     @GetMapping
-    public List<TitleDto> getTitles() {
+    public List<ReaderDto> getReaders() {
         throw new IllegalArgumentException("Not implementet yet!");
     }
 
     @GetMapping("{id}")
-    public TitleDto getTitle(Long id) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ReaderDto getReader(Long id) {
+        return new ReaderDto(1L, "Jan", "Pawel", LocalDate.now());
     }
 
     @DeleteMapping
-    public void deleteTitle(Long id) {
+    public void deleteReader(Long id) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 
     @PutMapping
-    public TitleDto updateTitle(TitleDto titleDto) {
+    public TitleDto updateReader(ReaderDto ReaderDto) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 
     @PostMapping
-    public void createTitle(TitleDto titleDto) {
+    public void createReader(ReaderDto ReaderDto) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 }

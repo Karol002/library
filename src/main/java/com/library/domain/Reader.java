@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -38,4 +38,9 @@ public class Reader {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
+    public Reader(String firstName, String lastName, LocalDate signUpDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.signUpDate = signUpDate;
+    }
 }

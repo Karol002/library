@@ -1,36 +1,37 @@
 package com.library.controller;
 
-import com.library.domain.dto.TitleDto;
+import com.library.domain.dto.BorrowDto;
+import com.library.domain.dto.CopyDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/library/titles")
-public class TitleController {
+@RequestMapping("/library/borrows")
+public class BorrowController {
 
     @GetMapping
-    public List<TitleDto> getTitles() {
+    public List<BorrowDto> getBorrows() {
         throw new IllegalArgumentException("Not implementet yet!");
     }
 
     @GetMapping("{id}")
-    public TitleDto getTitle(Long id) {
+    public BorrowDto getBorrow(Long id) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 
     @DeleteMapping
-    public void deleteTitle(Long id) {
+    public void deleteBorrow(Long id) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 
     @PutMapping
-    public TitleDto updateTitle(TitleDto titleDto) {
+    public BorrowDto updateBorrow(CopyDto CopyDto) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 
     @PostMapping
-    public void createTitle(TitleDto titleDto) {
+    public void createBorrow(BorrowDto borrowDto) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 }
