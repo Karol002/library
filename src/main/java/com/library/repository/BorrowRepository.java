@@ -9,6 +9,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface BorrowDao extends CrudRepository<Borrow, Long> {
+public interface BorrowRepository extends CrudRepository<Borrow, Long> {
     List<Borrow> findAll();
+    Borrow save(Borrow borrow);
 }

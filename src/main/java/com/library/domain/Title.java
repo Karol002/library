@@ -18,7 +18,6 @@ import java.time.LocalDate;
 public class Title {
     @Id
     @GeneratedValue
-    @NotNull
     @Column(name="ID", unique=true)
     private Long id;
     @Column(name = "TITLE")

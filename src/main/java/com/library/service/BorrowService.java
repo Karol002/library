@@ -1,7 +1,7 @@
 package com.library.service;
 
 import com.library.domain.Borrow;
-import com.library.repository.BorrowDao;
+import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,21 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BorrowService {
-    BorrowDao borrowDao;
+    private final BorrowRepository borrowRepository;
 
     public List<Borrow> getBorrows() {
-        return borrowDao.findAll();
+        return borrowRepository.findAll();
     }
 
     public Borrow getBorrow(Long id) {
-        return borrowDao.findById(id).get();
+        return borrowRepository.findById(id).get();
     }
 
     public void deleteBorrow(Long id) {
-        borrowDao.deleteById(id);
+        borrowRepository.deleteById(id);
     }
 
     public Borrow saveBorrow(final Borrow borrow) {
-        return  borrowDao.save(borrow);
+        return  borrowRepository.save(borrow);
     }
 }

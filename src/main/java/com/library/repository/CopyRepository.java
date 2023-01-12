@@ -9,6 +9,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface CopyDao extends CrudRepository<Copy, Long> {
+public interface CopyRepository extends CrudRepository<Copy, Long> {
     List<Copy> findAll();
+    Copy save(Copy copy);
 }

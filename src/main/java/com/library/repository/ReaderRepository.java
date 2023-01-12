@@ -9,6 +9,7 @@ import java.util.List;
 
 @Transactional
 @Repository
-public interface ReaderDao extends CrudRepository<Reader, Long> {
+public interface ReaderRepository extends CrudRepository<Reader, Long> {
     List<Reader> findAll();
+    Reader save(Reader reader);
 }

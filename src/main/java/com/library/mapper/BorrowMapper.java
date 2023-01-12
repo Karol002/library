@@ -3,13 +3,17 @@ import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
 import com.library.service.CopyService;
 import com.library.service.ReaderService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class BorrowMapper {
-    private ReaderService readerService;
-    private CopyService copyService;
+    private final ReaderService readerService;
+    private final CopyService copyService;
 
     public Borrow mapToBorrow(BorrowDto borrowDto) {
         return new Borrow(

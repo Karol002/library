@@ -1,21 +1,27 @@
 package com.library.controller;
 
 import com.library.domain.dto.CopyDto;
+import com.library.mapper.CopyMapper;
+import com.library.service.CopyService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/library/copies")
+@RequiredArgsConstructor
 public class CopyController {
+    private final CopyService copyService;
+    private final CopyMapper copyMapper;
 
     @GetMapping
     public List<CopyDto> getCopies() {
         throw new IllegalArgumentException("Not implementet yet!");
     }
 
-    @GetMapping("{id}")
-    public CopyDto getCopies(Long id) {
+    @GetMapping(value = "{id}")
+    public CopyDto getCopies(@PathVariable Long id) {
         throw new IllegalArgumentException("Not implementet yet! title");
     }
 

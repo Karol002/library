@@ -1,7 +1,7 @@
 package com.library.service;
 
 import com.library.domain.Reader;
-import com.library.repository.ReaderDao;
+import com.library.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,21 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReaderService {
-    ReaderDao readerDao;
+    private final ReaderRepository readerRepository;
 
     public List<Reader> getReaders() {
-        return readerDao.findAll();
+        return readerRepository.findAll();
     }
 
     public Reader getReader(Long id) {
-        return readerDao.findById(id).get();
+        return readerRepository.findById(id).get();
     }
 
     public void deleteReader(Long id) {
-        readerDao.deleteById(id);
+        readerRepository.deleteById(id);
     }
 
     public Reader saveReader(final Reader reader) {
-        return  readerDao.save(reader);
+        return  readerRepository.save(reader);
     }
 }

@@ -1,30 +1,32 @@
 package com.library.service;
 
+import com.library.controller.exception.TitleNotFoundException;
 import com.library.domain.Title;
-import com.library.repository.TitleDao;
+import com.library.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class TitleService {
-    TitleDao titleDao;
+    private final TitleRepository titleRepository;
 
     public List<Title> getTitles() {
-        return titleDao.findAll();
+        return titleRepository.findAll();
     }
 
-    public Title getTitle(Long id) {
-        return titleDao.findById(id).get();
+    public Title getTitle(Long id) throws TitleNotFoundException {
+        return titleRepository.findById(id).orElseThrow(TitleNotFoundException::new);
     }
 
     public void deleteTitle(Long id) {
-        titleDao.deleteById(id);
+        titleRepository.deleteById(id);
     }
 
     public Title saveTitle(final Title title) {
-        return  titleDao.save(title);
+        return titleRepository.save(title);
     }
 }
