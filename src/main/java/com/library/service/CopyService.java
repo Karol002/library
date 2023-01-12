@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.controller.exception.CopyNotFoundException;
 import com.library.domain.Copy;
 import com.library.repository.CopyRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class CopyService {
         return copyRepository.findAll();
     }
 
-    public Copy getCopy(Long id) {
-        return copyRepository.findById(id).get();
+    public Copy getCopy(Long id) throws CopyNotFoundException{
+        return copyRepository.findById(id).orElseThrow(CopyNotFoundException::new);
     }
 
     public void deleteCopy(Long id) {

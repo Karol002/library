@@ -1,5 +1,6 @@
 package com.library.service;
 
+import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Reader;
 import com.library.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class ReaderService {
         return readerRepository.findAll();
     }
 
-    public Reader getReader(Long id) {
-        return readerRepository.findById(id).get();
+    public Reader getReader(Long id) throws ReaderNotFoundException{
+        return readerRepository.findById(id).orElseThrow(ReaderNotFoundException::new);
     }
 
     public void deleteReader(Long id) {

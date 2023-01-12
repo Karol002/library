@@ -1,5 +1,7 @@
 package com.library.controller;
 
+import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
 import com.library.mapper.CopyMapper;
@@ -7,6 +9,7 @@ import com.library.service.CopyService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,22 +29,27 @@ public class CopyController {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<CopyDto> getCopy(@PathVariable Long id) {
+    public ResponseEntity<CopyDto> getCopy(@PathVariable Long id) throws CopyNotFoundException {
         return new ResponseEntity<>(copyMapper.mapToCopyDto(copyService.getCopy(id)), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "{id}")
-    public void deleteCopy(Long id) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ResponseEntity<Void> deleteCopy(@PathVariable Long id) {
+        copyService.deleteCopy(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public CopyDto updateCopy(CopyDto CopyDto) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ResponseEntity<CopyDto> updateCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException {
+        Copy copy = copyMapper.mapToCopy(copyDto);
+        Copy savedCopy = copyService.saveCopy(copy);
+        return ResponseEntity.ok(copyMapper.mapToCopyDto(savedCopy));
     }
 
-    @PostMapping
-    public void createCopy(CopyDto copyDto) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException {
+        Copy copy = copyMapper.mapToCopy(copyDto);
+        copyService.saveCopy(copy);
+        return ResponseEntity.ok().build();
     }
 }

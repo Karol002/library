@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class Copy {
     @Id
     @GeneratedValue
-    @NotNull
     @Column(name="ID", unique=true)
     private Long id;
 
@@ -30,7 +29,8 @@ public class Copy {
     @Transient
     private Borrow borrow;
 
-    public Copy(String status, Title title) {
+    public Copy(Long id, String status, Title title) {
+        this.id = id;
         this.status = status;
         this.title = title;
     }

@@ -1,10 +1,16 @@
 package com.library.controller;
 
+import com.library.controller.exception.ReaderNotFoundException;
+import com.library.domain.Reader;
+import com.library.domain.Title;
 import com.library.domain.dto.ReaderDto;
 import com.library.domain.dto.TitleDto;
 import com.library.mapper.ReaderMapper;
 import com.library.service.ReaderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,27 +24,33 @@ public class ReaderController {
     private final ReaderMapper readerMapper;
 
     @GetMapping
-    public List<ReaderDto> getReaders() {
-        throw new IllegalArgumentException("Not implementet yet!");
+    public ResponseEntity<List<ReaderDto>> getReaders() {
+        List<Reader> readers = readerService.getReaders();
+        return ResponseEntity.ok(readerMapper.mapToReaderDtoList(readers));
     }
 
     @GetMapping(value = "{id}")
-    public ReaderDto getReader(@PathVariable Long id) {
-        return new ReaderDto(1L, "Jan", "Pawel", LocalDate.now());
+    public ResponseEntity<ReaderDto> getReader(@PathVariable Long id) throws ReaderNotFoundException {
+        return new ResponseEntity<>(readerMapper.mapToReaderDto(readerService.getReader(id)), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public void deleteReader(Long id) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ResponseEntity<Void> deleteReader(@PathVariable Long id) {
+        readerService.deleteReader(id);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public TitleDto updateReader(ReaderDto ReaderDto) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    public ResponseEntity<ReaderDto> updateReader(@RequestBody ReaderDto readerDto) {
+        Reader reader = readerMapper.mapToReader(readerDto);
+        Reader savedReader = readerService.saveReader(reader);
+        return ResponseEntity.ok(readerMapper.mapToReaderDto(savedReader));
     }
 
-    @PostMapping
-    public void createReader(ReaderDto ReaderDto) {
-        throw new IllegalArgumentException("Not implementet yet! title");
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createReader(@RequestBody ReaderDto readerDto) {
+        Reader reader = readerMapper.mapToReader(readerDto);
+        readerService.saveReader(reader);
+        return ResponseEntity.ok().build();
     }
 }

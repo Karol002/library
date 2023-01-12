@@ -16,6 +16,7 @@ public class CopyMapper {
 
     public Copy mapToCopy(final CopyDto copyDto) throws TitleNotFoundException {
         return new Copy(
+                copyDto.getId(),
                 copyDto.getStatus(),
                 titleService.getTitle(copyDto.getTitleId())
         );

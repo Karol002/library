@@ -21,7 +21,7 @@ public class Borrow {
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
-    @Column(name = "RETURN_ID")
+    @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
     @OneToOne

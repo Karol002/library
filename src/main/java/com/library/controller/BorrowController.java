@@ -1,6 +1,8 @@
 package com.library.controller;
 
 import com.library.controller.exception.BorrowNotFoundException;
+import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
 import com.library.mapper.BorrowMapper;
@@ -38,14 +40,14 @@ public class BorrowController {
     }
 
     @PutMapping
-    public ResponseEntity<BorrowDto> updateBorrow(@RequestBody BorrowDto borrowDto) {
+    public ResponseEntity<BorrowDto> updateBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyNotFoundException {
         Borrow borrow = borrowMapper.mapToBorrow(borrowDto);
         Borrow savedBorrow = borrowService.saveBorrow(borrow);
         return ResponseEntity.ok(borrowMapper.mapToBorrowDto(savedBorrow));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createBorrow(@RequestBody BorrowDto borrowDto) {
+    public ResponseEntity<Void> createBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyNotFoundException {
         Borrow borrow = borrowMapper.mapToBorrow(borrowDto);
         borrowService.saveBorrow(borrow);
         return ResponseEntity.ok().build();

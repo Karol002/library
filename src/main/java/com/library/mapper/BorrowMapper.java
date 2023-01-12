@@ -1,4 +1,6 @@
 package com.library.mapper;
+import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
 import com.library.service.CopyService;
@@ -15,7 +17,7 @@ public class BorrowMapper {
     private final ReaderService readerService;
     private final CopyService copyService;
 
-    public Borrow mapToBorrow(BorrowDto borrowDto) {
+    public Borrow mapToBorrow(BorrowDto borrowDto) throws CopyNotFoundException, ReaderNotFoundException {
         return new Borrow(
                 borrowDto.getId(),
                 borrowDto.getBorrowDate(),

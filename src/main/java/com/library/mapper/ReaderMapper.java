@@ -10,6 +10,7 @@ import java.util.List;
 public class ReaderMapper {
     public Reader mapToReader(final ReaderDto readerDto) {
         return new Reader(
+                readerDto.getId(),
                 readerDto.getFirstName(),
                 readerDto.getLastName(),
                 readerDto.getSignUpDate()

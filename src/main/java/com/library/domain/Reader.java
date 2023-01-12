@@ -17,7 +17,6 @@ import java.util.List;
 public class Reader {
     @Id
     @GeneratedValue
-    @NotNull
     @Column(name="ID", unique=true)
     private Long id;
 
@@ -38,7 +37,8 @@ public class Reader {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
-    public Reader(String firstName, String lastName, LocalDate signUpDate) {
+    public Reader(Long id, String firstName, String lastName, LocalDate signUpDate) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.signUpDate = signUpDate;
