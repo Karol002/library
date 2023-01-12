@@ -20,18 +20,22 @@ public class Reader {
     @NotNull
     @Column(name="ID", unique=true)
     private Long id;
+
     @Column(name = "FIRST_NAME")
     private String firstName;
+
     @Column(name = "LAST_NAME")
     private String lastName;
+
     @Column(name = "SIGN_UP_DATE")
     private LocalDate signUpDate;
+
     @OneToMany(
-            targetEntity = BorrowedBook.class,
+            targetEntity = Borrow.class,
             mappedBy = "reader",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<BorrowedBook> borrows = new ArrayList<>();
+    private List<Borrow> borrows = new ArrayList<>();
 
 }

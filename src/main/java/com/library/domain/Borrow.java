@@ -12,20 +12,24 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "borrows")
-public class BorrowedBook {
+public class Borrow {
     @Id
     @GeneratedValue
     @NotNull
     @Column(name="ID", unique=true)
     private Long id;
+
+    @Column(name = "BORROW_DATE")
+    private LocalDate borrowDate;
+
+    @Column(name = "RETURN_ID")
+    private LocalDate returnDate;
+
     @OneToOne
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
+
     @ManyToOne
     @JoinColumn(name = "READER_ID")
     private Reader reader;
-    @JoinColumn(name = "BORROW_DATE")
-    private LocalDate borrowDate;
-    @JoinColumn(name = "RETURN_ID")
-    private LocalDate returnDate;
 }

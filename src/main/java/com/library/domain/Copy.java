@@ -17,13 +17,16 @@ public class Copy {
     @NotNull
     @Column(name="ID", unique=true)
     private Long id;
+
     @Column(name = "STATUS")
     private String status;
+
     @ManyToOne
     @JoinColumn(name = "TITLE_ID")
     private Title title;
+
     @OneToOne
     @JoinColumn(name = "BORROW_ID")
     @Transient
-    private BorrowedBook borrowedBook;
+    private Borrow borrow;
 }
