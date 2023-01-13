@@ -32,8 +32,8 @@ public class Reader {
     @OneToMany(
             targetEntity = Borrow.class,
             mappedBy = "reader",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.REMOVE,
+            fetch = FetchType.EAGER
     )
     private List<Borrow> borrows = new ArrayList<>();
 

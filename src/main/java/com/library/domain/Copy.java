@@ -23,15 +23,4 @@ public class Copy {
     @ManyToOne
     @JoinColumn(name = "TITLE_ID")
     private Title title;
-
-    @OneToOne
-    @JoinColumn(name = "BORROW_ID")
-    @Transient
-    private Borrow borrow;
-
-    public Copy(Long id, String status, Title title) {
-        this.id = id;
-        this.status = status;
-        this.title = title;
-    }
 }

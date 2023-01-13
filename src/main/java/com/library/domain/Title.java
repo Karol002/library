@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -24,7 +22,20 @@ public class Title {
     private String title;
     @Column(name = "AUTHOR")
     private String author;
-
     @Column(name = "PUBLICATION_DATE")
     private LocalDate publicationDate;
+    @OneToMany(
+            targetEntity = Copy.class,
+            mappedBy = "title",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    private List<Copy> copies;
+
+    public Title(Long id, String title, String author, LocalDate publicationDate) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.publicationDate = publicationDate;
+    }
 }
