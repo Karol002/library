@@ -32,6 +32,12 @@ public class Title {
     )
     private List<Copy> copies;
 
+    public Title(String title, String author, LocalDate publicationDate) {
+        this.title = title;
+        this.author = author;
+        this.publicationDate = publicationDate;
+    }
+
     public Title(Long id, String title, String author, LocalDate publicationDate) {
         this.id = id;
         this.title = title;

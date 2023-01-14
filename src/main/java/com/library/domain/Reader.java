@@ -37,6 +37,12 @@ public class Reader {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
+    public Reader(String firstName, String lastName, LocalDate signUpDate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.signUpDate = signUpDate;
+    }
+
     public Reader(Long id, String firstName, String lastName, LocalDate signUpDate) {
         this.id = id;
         this.firstName = firstName;

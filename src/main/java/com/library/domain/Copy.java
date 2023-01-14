@@ -23,4 +23,9 @@ public class Copy {
     @ManyToOne
     @JoinColumn(name = "TITLE_ID")
     private Title title;
+
+    public Copy(String status, Title title) {
+        this.status = status;
+        this.title = title;
+    }
 }
