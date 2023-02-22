@@ -11,9 +11,11 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "borrows")
+@Entity
+@Table(name = "BORROWS")
 public class Borrow {
     @Id
+    @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;
@@ -24,7 +26,7 @@ public class Borrow {
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
 

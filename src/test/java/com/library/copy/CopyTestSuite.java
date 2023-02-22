@@ -44,6 +44,7 @@ public class CopyTestSuite {
 
         //CleanUp
         copyRepository.deleteAll();
+        titleRepository.deleteAll();
     }
 
     @Test
@@ -66,6 +67,7 @@ public class CopyTestSuite {
 
         //CleanUp
         copyRepository.deleteAll();
+        titleRepository.deleteAll();
     }
 
     @Test
@@ -83,12 +85,14 @@ public class CopyTestSuite {
         //When
         copyRepository.deleteById(firstCopy.getId());
         List<Copy> copies = copyRepository.findAll();
+        Long secondCopyId = copies.get(0).getId();
 
         //Then
         assertEquals(1, copies.size());
-        assertEquals(secondCopy.getId(), copies.get(0).getId());
+        assertEquals(secondCopyId, secondCopy.getId());
 
         //CleanUp
         copyRepository.deleteAll();
+        titleRepository.deleteAll();
     }
 }

@@ -13,9 +13,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "readers")
+@Entity
+@Table(name = "READERS")
 public class Reader {
     @Id
+    @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;

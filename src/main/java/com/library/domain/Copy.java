@@ -10,9 +10,11 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "copies")
+@Entity
+@Table(name = "COPIES")
 public class Copy {
     @Id
+    @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;

@@ -12,9 +12,11 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "titles")
+@Entity
+@Table(name = "TITLES")
 public class Title {
     @Id
+    @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;
@@ -27,7 +29,7 @@ public class Title {
     @OneToMany(
             targetEntity = Copy.class,
             mappedBy = "title",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER
     )
     private List<Copy> copies;
