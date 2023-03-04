@@ -1,6 +1,6 @@
-package com.library.title;
+package com.library.domain;
 
-import com.library.domain.Title;
+import com.library.repository.CopyRepository;
 import com.library.repository.TitleRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,11 @@ public class TitleTestSuite {
     @Autowired
     private TitleRepository titleRepository;
 
+    @Autowired
+    private CopyRepository copyRepository;
+
     @Test
-    void testfindBookById() {
+    void testFindBookById() {
         //Given
         Title humanKind = new Title("HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Title greekMyths = new Title("GREEK MYTHS", "JAN LEWIS", LocalDate.of(2010, 11, 16));
@@ -58,10 +61,10 @@ public class TitleTestSuite {
         titleRepository.save(chinese);
 
         //When
-        List<Title> books = titleRepository.findAll();
+        long books = titleRepository.count();
 
         //Then
-        assertEquals(3, books.size());
+        assertEquals(3, books);
 
         //CleanUp
         titleRepository.deleteAll();
@@ -93,5 +96,33 @@ public class TitleTestSuite {
 
         //CleanUp
         titleRepository.deleteAll();
+    }
+
+    @Test
+    void testCascadeWhenDeleteCopy() {
+        //Given
+        Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Copy firstCopy = new Copy("returned", humanKind);
+        Copy secondCopy = new Copy( "returned", humanKind);
+
+        humanKind.getCopies().add(firstCopy);
+        humanKind.getCopies().add(secondCopy);
+
+        titleRepository.save(humanKind);
+        copyRepository.save(firstCopy);
+        copyRepository.save(secondCopy);
+
+        //When
+        long titlesSizeBeforeDelete = titleRepository.count();
+        copyRepository.deleteAll();
+        long titlesSizeAfterDelete = titleRepository.count();
+
+        //Then
+        assertEquals(1, titlesSizeBeforeDelete);
+        assertEquals(1, titlesSizeAfterDelete);
+
+        //CleanUp
+        titleRepository.deleteAll();
+        copyRepository.deleteAll();
     }
 }

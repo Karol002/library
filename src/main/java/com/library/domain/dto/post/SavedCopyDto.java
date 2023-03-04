@@ -1,13 +1,11 @@
-package com.library.domain.dto;
+package com.library.domain.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-
 @Data
 @AllArgsConstructor
-public class CopyDto {
-    private Long id;
+public class SavedCopyDto {
     private String status;
     private Long titleId;
 }

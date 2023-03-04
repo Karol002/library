@@ -1,8 +1,10 @@
 package com.library.mapper;
+
 import com.library.controller.exception.CopyNotFoundException;
 import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
+import com.library.domain.dto.post.SavedBorrowDto;
 import com.library.service.CopyService;
 import com.library.service.ReaderService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,15 @@ public class BorrowMapper {
                 borrowDto.getReturnDate(),
                 copyService.getCopy(borrowDto.getCopyId()),
                 readerService.getReader(borrowDto.getReaderId())
+        );
+    }
+
+    public Borrow mapToBorrow(SavedBorrowDto savedBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
+        return new Borrow(
+                savedBorrowDto.getBorrowDate(),
+                savedBorrowDto.getReturnDate(),
+                copyService.getCopy(savedBorrowDto.getCopyId()),
+                readerService.getReader(savedBorrowDto.getReaderId())
         );
     }
 

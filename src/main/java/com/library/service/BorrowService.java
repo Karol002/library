@@ -25,7 +25,10 @@ public class BorrowService {
         borrowRepository.deleteById(id);
     }
 
-    public Borrow saveBorrow(final Borrow borrow) {
-        return  borrowRepository.save(borrow);
+    public void saveBorrow(final Borrow borrow) { borrowRepository.save(borrow); }
+    
+    public Borrow updateBorrow(final Borrow borrow) throws BorrowNotFoundException {
+        getBorrow(borrow.getId());
+        return borrowRepository.save(borrow);
     }
 }

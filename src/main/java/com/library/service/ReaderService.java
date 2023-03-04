@@ -25,7 +25,12 @@ public class ReaderService {
         readerRepository.deleteById(id);
     }
 
-    public Reader saveReader(final Reader reader) {
+    public void saveReader(final Reader reader) {
+        readerRepository.save(reader);
+    }
+
+    public Reader updateReader(final Reader reader) throws ReaderNotFoundException {
+        getReader(reader.getId());
         return  readerRepository.save(reader);
     }
 }

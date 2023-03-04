@@ -4,10 +4,10 @@ import com.library.controller.exception.CopyNotFoundException;
 import com.library.controller.exception.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
+import com.library.domain.dto.post.SavedCopyDto;
 import com.library.mapper.CopyMapper;
 import com.library.service.CopyService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/library/copies")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CopyController {
     private final CopyService copyService;
     private final CopyMapper copyMapper;
@@ -40,15 +41,15 @@ public class CopyController {
     }
 
     @PutMapping
-    public ResponseEntity<CopyDto> updateCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException {
+    public ResponseEntity<CopyDto> updateCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException, CopyNotFoundException {
         Copy copy = copyMapper.mapToCopy(copyDto);
-        Copy savedCopy = copyService.saveCopy(copy);
+        Copy savedCopy = copyService.updateCopy(copy);
         return ResponseEntity.ok(copyMapper.mapToCopyDto(savedCopy));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException {
-        Copy copy = copyMapper.mapToCopy(copyDto);
+    public ResponseEntity<Void> createCopy(@RequestBody SavedCopyDto savedCopyDto) throws TitleNotFoundException {
+        Copy copy = copyMapper.mapToCopy(savedCopyDto);
         copyService.saveCopy(copy);
         return ResponseEntity.ok().build();
     }

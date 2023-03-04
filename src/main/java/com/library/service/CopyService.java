@@ -25,7 +25,10 @@ public class CopyService {
         copyRepository.deleteById(id);
     }
 
-    public Copy saveCopy(final Copy copy) {
+    public void saveCopy(final Copy copy) { copyRepository.save(copy); }
+
+    public Copy updateCopy(final Copy copy) throws CopyNotFoundException {
+        getCopy(copy.getId());
         return  copyRepository.save(copy);
     }
 }

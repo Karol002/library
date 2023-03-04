@@ -2,13 +2,13 @@ package com.library.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,7 +26,7 @@ public class Borrow {
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
 

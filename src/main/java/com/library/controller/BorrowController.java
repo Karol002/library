@@ -5,6 +5,7 @@ import com.library.controller.exception.CopyNotFoundException;
 import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
+import com.library.domain.dto.post.SavedBorrowDto;
 import com.library.mapper.BorrowMapper;
 import com.library.service.BorrowService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/library/borrows")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class BorrowController {
     private final BorrowService borrowService;
     private final BorrowMapper borrowMapper;
@@ -40,15 +42,15 @@ public class BorrowController {
     }
 
     @PutMapping
-    public ResponseEntity<BorrowDto> updateBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyNotFoundException {
+    public ResponseEntity<BorrowDto> updateBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyNotFoundException, BorrowNotFoundException {
         Borrow borrow = borrowMapper.mapToBorrow(borrowDto);
-        Borrow savedBorrow = borrowService.saveBorrow(borrow);
+        Borrow savedBorrow = borrowService.updateBorrow(borrow);
         return ResponseEntity.ok(borrowMapper.mapToBorrowDto(savedBorrow));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createBorrow(@RequestBody BorrowDto borrowDto) throws ReaderNotFoundException, CopyNotFoundException {
-        Borrow borrow = borrowMapper.mapToBorrow(borrowDto);
+    public ResponseEntity<Void> createBorrow(@RequestBody SavedBorrowDto savedBorrowDto) throws ReaderNotFoundException, CopyNotFoundException {
+        Borrow borrow = borrowMapper.mapToBorrow(savedBorrowDto);
         borrowService.saveBorrow(borrow);
         return ResponseEntity.ok().build();
     }

@@ -2,14 +2,15 @@ package com.library.domain;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -29,10 +30,10 @@ public class Title {
     @OneToMany(
             targetEntity = Copy.class,
             mappedBy = "title",
-            cascade = CascadeType.MERGE,
+            cascade = CascadeType.REMOVE,
             fetch = FetchType.EAGER
     )
-    private List<Copy> copies;
+    private List<Copy> copies = new ArrayList<>();
 
     public Title(String title, String author, LocalDate publicationDate) {
         this.title = title;
