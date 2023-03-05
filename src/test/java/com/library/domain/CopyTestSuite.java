@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CopyTestSuite {
+
     @Autowired
     private CopyRepository copyRepository;
 

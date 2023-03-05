@@ -46,7 +46,7 @@ public class BorrowMapper {
                 borrow.getCopy().getId());
     }
 
-    public List<BorrowDto> mapToBorrowListDto(final List<Borrow> borrowList) {
+    public List<BorrowDto> mapToBorrowDtoList(final List<Borrow> borrowList) {
         return borrowList.stream()
                 .map(this::mapToBorrowDto)
                 .toList();

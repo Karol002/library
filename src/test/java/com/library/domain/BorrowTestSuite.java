@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class BorrowTestSuite {
+
     @Autowired
     private TitleRepository titleRepository;
     @Autowired

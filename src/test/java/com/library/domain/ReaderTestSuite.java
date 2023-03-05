@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ReaderTestSuite {
+
     @Autowired
     private ReaderRepository readerRepository;
 

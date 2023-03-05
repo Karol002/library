@@ -27,7 +27,7 @@ public class BorrowController {
     @GetMapping
     public ResponseEntity<List<BorrowDto>> getBorrows() {
         List<Borrow> borrows = borrowService.getBorrows();
-        return ResponseEntity.ok(borrowMapper.mapToBorrowListDto(borrows));
+        return ResponseEntity.ok(borrowMapper.mapToBorrowDtoList(borrows));
     }
 
     @GetMapping(value = "{id}")

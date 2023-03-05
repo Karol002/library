@@ -25,12 +25,10 @@ public class TitleService {
         titleRepository.deleteById(id);
     }
 
-    public void saveTitle(final Title title) {
-        titleRepository.save(title);
-    }
+    public void saveTitle(final Title title) { titleRepository.save(title); }
 
     public Title updateTitle(final  Title title) throws TitleNotFoundException {
-        titleRepository.findById(title.getId()).orElseThrow(TitleNotFoundException::new);
+        getTitle(title.getId());
         return titleRepository.save(title);
     }
 }
