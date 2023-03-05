@@ -6,6 +6,7 @@ import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,10 +26,16 @@ public class BorrowService {
         borrowRepository.deleteById(id);
     }
 
-    public void saveBorrow(final Borrow borrow) { borrowRepository.save(borrow); }
+    public void borrowBook(final Borrow borrow) { borrowRepository.save(borrow); }
     
     public Borrow updateBorrow(final Borrow borrow) throws BorrowNotFoundException {
         getBorrow(borrow.getId());
+        return borrowRepository.save(borrow);
+    }
+
+    public Borrow returnBook(final Borrow borrow) throws BorrowNotFoundException {
+        getBorrow(borrow.getId());
+        borrow.setReturnDate(LocalDate.now());
         return borrowRepository.save(borrow);
     }
 }

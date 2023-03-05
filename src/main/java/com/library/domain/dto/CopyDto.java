@@ -8,6 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CopyDto {
     private Long id;
-    private String status;
+    private boolean isBorrowed;
     private Long titleId;
 }

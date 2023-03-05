@@ -9,6 +9,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@NamedNativeQuery(
+        name = "Copy.getAllAvailableCopies",
+        query = "SELECT * FROM copies WHERE TITLE_ID = :titleId AND IS_BORROWED = false",
+        resultClass = Copy.class
+)
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,8 +28,9 @@ public class Copy {
     @Column(name="ID", unique=true)
     private Long id;
 
-    @Column(name = "STATUS")
-    private String status;
+    @NotNull
+    @Column(name = "IS_BORROWED")
+    private boolean isBorrowed;
 
     @ManyToOne
     @JoinColumn(name = "TITLE_ID")
@@ -36,14 +44,13 @@ public class Copy {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
-    public Copy(String status, Title title) {
-        this.status = status;
+    public Copy(Title title) {
         this.title = title;
     }
 
-    public Copy(Long id, String status, Title title) {
+    public Copy(Long id, boolean isBorrowed, Title title) {
         this.id = id;
-        this.status = status;
+        this.isBorrowed = isBorrowed;
         this.title = title;
     }
 }

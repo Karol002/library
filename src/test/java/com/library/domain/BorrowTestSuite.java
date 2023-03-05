@@ -32,8 +32,8 @@ public class BorrowTestSuite {
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
         Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
         Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
         Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
 
@@ -73,8 +73,8 @@ public class BorrowTestSuite {
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
         Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
         Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
         Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
 
@@ -112,8 +112,8 @@ public class BorrowTestSuite {
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
         Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
         Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
         Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
 
@@ -153,8 +153,8 @@ public class BorrowTestSuite {
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
         Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
         Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
         Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
 
@@ -195,8 +195,8 @@ public class BorrowTestSuite {
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
         Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
         Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
         Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
 

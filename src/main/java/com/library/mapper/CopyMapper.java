@@ -18,22 +18,19 @@ public class CopyMapper {
     public Copy mapToCopy(final CopyDto copyDto) throws TitleNotFoundException {
         return new Copy(
                 copyDto.getId(),
-                copyDto.getStatus(),
+                copyDto.isBorrowed(),
                 titleService.getTitle(copyDto.getTitleId())
         );
     }
 
     public Copy mapToCopy(final SavedCopyDto savedCopyDto) throws TitleNotFoundException {
-        return new Copy(
-                savedCopyDto.getStatus(),
-                titleService.getTitle(savedCopyDto.getTitleId())
-        );
+        return new Copy(titleService.getTitle(savedCopyDto.getTitleId()));
     }
 
     public CopyDto mapToCopyDto(final Copy copy) {
         return new CopyDto(
                 copy.getId(),
-                copy.getStatus(),
+                copy.isBorrowed(),
                 copy.getTitle().getId()
         );
     }

@@ -6,6 +6,7 @@ import com.library.repository.CopyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -30,5 +31,24 @@ public class CopyService {
     public Copy updateCopy(final Copy copy) throws CopyNotFoundException {
         getCopy(copy.getId());
         return  copyRepository.save(copy);
+    }
+
+    public void borrowCopy(final Copy copy) {
+        copy.setBorrowed(true);
+        copyRepository.save(copy);
+    }
+
+    public void returnCopy(final Copy copy) {
+        copy.setBorrowed(false);
+        copyRepository.save(copy);
+    }
+
+    public boolean isCopyAvailable(final Long id) throws CopyNotFoundException {
+        Copy copy = getCopy(id);
+        return !copy.isBorrowed();
+    }
+
+    public List<Copy> getAllAvailable(Long titleId) {
+        return copyRepository.getAllAvailableCopies(titleId);
     }
 }

@@ -103,8 +103,8 @@ public class TitleTestSuite {
     void testCascadeWhenDeleteCopy() {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
-        Copy firstCopy = new Copy("returned", humanKind);
-        Copy secondCopy = new Copy( "returned", humanKind);
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
 
         humanKind.getCopies().add(firstCopy);
         humanKind.getCopies().add(secondCopy);

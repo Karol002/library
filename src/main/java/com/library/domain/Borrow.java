@@ -40,4 +40,10 @@ public class Borrow {
         this.copy = copy;
         this.reader = reader;
     }
+
+    public Borrow(Copy copy, Reader reader) {
+        borrowDate = LocalDate.now();
+        this.copy = copy;
+        this.reader = reader;
+    }
 }

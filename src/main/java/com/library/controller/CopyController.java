@@ -34,9 +34,21 @@ public class CopyController {
         return new ResponseEntity<>(copyMapper.mapToCopyDto(copyService.getCopy(id)), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/available/{titleId}")
+    public ResponseEntity<List<CopyDto>> getAvailableCopy(@PathVariable Long titleId) {
+        return new ResponseEntity<>(copyMapper.mapToCopyDtoList(copyService.getAllAvailable(titleId)), HttpStatus.OK);
+    }
+
     @DeleteMapping(value = "{id}")
     public ResponseEntity<Void> deleteCopy(@PathVariable Long id) {
         copyService.deleteCopy(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "{titleId}")
+    public ResponseEntity<Void> createCopy(@PathVariable Long titleId) throws TitleNotFoundException {
+        Copy copy = copyMapper.mapToCopy(new SavedCopyDto(titleId));
+        copyService.saveCopy(copy);
         return ResponseEntity.ok().build();
     }
 
@@ -45,12 +57,5 @@ public class CopyController {
         Copy copy = copyMapper.mapToCopy(copyDto);
         Copy savedCopy = copyService.updateCopy(copy);
         return ResponseEntity.ok(copyMapper.mapToCopyDto(savedCopy));
-    }
-
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createCopy(@RequestBody SavedCopyDto savedCopyDto) throws TitleNotFoundException {
-        Copy copy = copyMapper.mapToCopy(savedCopyDto);
-        copyService.saveCopy(copy);
-        return ResponseEntity.ok().build();
     }
 }

@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CopyController.class)
 public class CopyControllerTest {
     private static final LocalDate TEST_DATE = LocalDate.of(2022, 12, 12);
-    private static final String TEST_STATUS = "Test status";
+    private static final Boolean TEST_STATUS = false;
     private static final String TEST_TITLE = "Test title";
     private static final String TEST_AUTHOR = "Test author";
     private static final Long TEST_TITLE_ID = 1L;
@@ -50,7 +50,7 @@ public class CopyControllerTest {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
         List<Copy> copies = new ArrayList<>();
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         copies.add(copy);
         List<CopyDto> copyDtos = new ArrayList<>();
         CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
@@ -65,14 +65,14 @@ public class CopyControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].titleId", is(1)))
-                .andExpect(jsonPath("$[0].status", is(TEST_STATUS)));
+                .andExpect(jsonPath("$[0].borrowed", is(TEST_STATUS)));
     }
 
     @Test
     void shouldFetchCopy() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
 
         when(copyService.getCopy(TEST_ID)).thenReturn(copy);
@@ -83,14 +83,14 @@ public class CopyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.titleId", is(1)))
-                .andExpect(jsonPath("$.status", is(TEST_STATUS)));
+                .andExpect(jsonPath("$.borrowed", is(TEST_STATUS)));
     }
 
     @Test
     void shouldUpdateCopy() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
 
         when(copyMapper.mapToCopy(copyDto)).thenReturn(copy);
@@ -108,14 +108,14 @@ public class CopyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.titleId", is(1)))
-                .andExpect(jsonPath("$.status", is(TEST_STATUS)));
+                .andExpect(jsonPath("$.borrowed", is(TEST_STATUS)));
     }
 
     @Test
     void shouldCreateCopy() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
 
         when(copyMapper.mapToCopy(copyDto)).thenReturn(copy);
@@ -124,7 +124,7 @@ public class CopyControllerTest {
         String jsonContent = gson.toJson(copyDto);
 
         //When & Then
-        mockMvc.perform(post("/library/copies")
+        mockMvc.perform(post("/library/copies/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))

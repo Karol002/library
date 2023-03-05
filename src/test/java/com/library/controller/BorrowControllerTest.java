@@ -8,8 +8,10 @@ import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
 import com.library.domain.dto.BorrowDto;
+import com.library.domain.dto.post.SavedBorrowDto;
 import com.library.mapper.BorrowMapper;
 import com.library.service.BorrowService;
+import com.library.service.CopyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,7 +40,6 @@ public class BorrowControllerTest {
     private static final LocalDate TEST_BORROW_DATE = LocalDate.of(2022, 12, 12);
     private static final String TEST_FIRST_NAME = "Test first name";
     private static final String TEST_LAST_NAME = "Test last name";
-    private static final String TEST_STATUS = "Test status";
     private static final String TEST_AUTHOR = "Test author";
     private static final String TEST_TITLE = "Test title";
     private static final Long TEST_READER_ID = 1L;
@@ -56,12 +57,15 @@ public class BorrowControllerTest {
     @MockBean
     private BorrowMapper borrowMapper;
 
+    @MockBean
+    private CopyService copyService;
+
     @Test
     void shouldFetchBorrows() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
 
         List<Borrow> borrows = new ArrayList<>();
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
@@ -90,7 +94,7 @@ public class BorrowControllerTest {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
         BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
 
@@ -112,7 +116,7 @@ public class BorrowControllerTest {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
         BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
 
@@ -143,11 +147,12 @@ public class BorrowControllerTest {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
-        Copy copy = new Copy(TEST_STATUS, title);
+        Copy copy = new Copy(title);
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
-        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
+        SavedBorrowDto borrowDto = new SavedBorrowDto(TEST_COPY_ID, TEST_READER_ID);
 
         when(borrowMapper.mapToBorrow(borrowDto)).thenReturn(borrow);
+        when(copyService.isCopyAvailable(TEST_COPY_ID)).thenReturn(true);
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())

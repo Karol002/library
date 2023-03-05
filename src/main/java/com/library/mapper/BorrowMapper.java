@@ -31,8 +31,6 @@ public class BorrowMapper {
 
     public Borrow mapToBorrow(SavedBorrowDto savedBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
         return new Borrow(
-                savedBorrowDto.getBorrowDate(),
-                savedBorrowDto.getReturnDate(),
                 copyService.getCopy(savedBorrowDto.getCopyId()),
                 readerService.getReader(savedBorrowDto.getReaderId())
         );
@@ -42,8 +40,8 @@ public class BorrowMapper {
         return new BorrowDto(borrow.getId(),
                 borrow.getBorrowDate(),
                 borrow.getReturnDate(),
-                borrow.getReader().getId(),
-                borrow.getCopy().getId());
+                borrow.getCopy().getId(),
+                borrow.getReader().getId());
     }
 
     public List<BorrowDto> mapToBorrowDtoList(final List<Borrow> borrowList) {
