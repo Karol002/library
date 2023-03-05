@@ -9,6 +9,16 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQuery(
+        name = "Copy.getAllCopies",
+        query = "SELECT c FROM Copy c JOIN FETCH c.title"
+)
+
+@NamedNativeQuery(
+        name = "Copy.getCopy",
+        query = "SELECT * FROM copies WHERE ID = :id",
+        resultClass = Copy.class
+)
 
 @NamedNativeQuery(
         name = "Copy.getAllAvailableCopies",
@@ -32,7 +42,7 @@ public class Copy {
     @Column(name = "IS_BORROWED")
     private boolean isBorrowed;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TITLE_ID")
     private Title title;
 
@@ -40,7 +50,7 @@ public class Copy {
             targetEntity = Borrow.class,
             mappedBy = "copy",
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Borrow> borrows = new ArrayList<>();
 

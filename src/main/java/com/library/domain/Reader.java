@@ -10,6 +10,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedNativeQuery(
+        name = "Reader.getAllReaders",
+        query = "SELECT * FROM readers",
+        resultClass = Reader.class
+)
+
+@NamedNativeQuery(
+        name = "Reader.getReader",
+        query = "SELECT * FROM readers WHERE ID = :id",
+        resultClass = Reader.class
+)
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,7 +47,7 @@ public class Reader {
             targetEntity = Borrow.class,
             mappedBy = "reader",
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Borrow> borrows = new ArrayList<>();
 

@@ -89,7 +89,7 @@ public class TitleTestSuite {
         titleRepository.deleteById(chineseId);
         titleRepository.deleteById(greekMythsId);
 
-        List<Title> books = titleRepository.findAll();
+        List<Title> books = titleRepository.getAllTitles();
 
         //Then
         assertEquals(1, books.size());

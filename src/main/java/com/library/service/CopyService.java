@@ -6,7 +6,6 @@ import com.library.repository.CopyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,11 +14,11 @@ public class CopyService {
     private final CopyRepository copyRepository;
 
     public List<Copy> getCopies() {
-        return copyRepository.findAll();
+        return copyRepository.getAllCopies();
     }
 
     public Copy getCopy(Long id) throws CopyNotFoundException{
-        return copyRepository.findById(id).orElseThrow(CopyNotFoundException::new);
+        return copyRepository.getCopy(id).orElseThrow(CopyNotFoundException::new);
     }
 
     public void deleteCopy(Long id) {

@@ -14,11 +14,11 @@ public class TitleService {
     private final TitleRepository titleRepository;
 
     public List<Title> getTitles() {
-        return titleRepository.findAll();
+        return titleRepository.getAllTitles();
     }
 
     public Title getTitle(Long id) throws TitleNotFoundException {
-        return titleRepository.findById(id).orElseThrow(TitleNotFoundException::new);
+        return titleRepository.getTitle(id).orElseThrow(TitleNotFoundException::new);
     }
 
     public void deleteTitle(Long id) {

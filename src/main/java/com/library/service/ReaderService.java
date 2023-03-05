@@ -14,11 +14,11 @@ public class ReaderService {
     private final ReaderRepository readerRepository;
 
     public List<Reader> getReaders() {
-        return readerRepository.findAll();
+        return readerRepository.getAllReaders();
     }
 
     public Reader getReader(Long id) throws ReaderNotFoundException{
-        return readerRepository.findById(id).orElseThrow(ReaderNotFoundException::new);
+        return readerRepository.getReader(id).orElseThrow(ReaderNotFoundException::new);
     }
 
     public void deleteReader(Long id) {

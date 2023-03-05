@@ -15,11 +15,11 @@ public class BorrowService {
     private final BorrowRepository borrowRepository;
 
     public List<Borrow> getBorrows() {
-        return borrowRepository.findAll();
+        return borrowRepository.getAllBorrows();
     }
 
     public Borrow getBorrow(Long id) throws BorrowNotFoundException {
-        return borrowRepository.findById(id).orElseThrow(BorrowNotFoundException::new);
+        return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }
 
     public void deleteBorrow(Long id) {

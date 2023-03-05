@@ -8,6 +8,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@NamedQuery(
+        name = "Borrow.getAllBorrows",
+        query = "SELECT b FROM Borrow b JOIN FETCH b.copy JOIN FETCH b.reader"
+)
+
+@NamedQuery(
+        name = "Borrow.getBorrow",
+        query = "SELECT b FROM Borrow b JOIN FETCH b.copy JOIN FETCH b.reader WHERE b.id = :id"
+)
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

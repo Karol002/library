@@ -10,6 +10,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedNativeQuery(
+        name = "Title.getAllTitles",
+        query = "SELECT * FROM titles",
+        resultClass = Title.class
+)
+
+@NamedNativeQuery(
+        name = "Title.getTitle",
+        query = "SELECT * FROM titles WHERE ID = :id",
+        resultClass = Title.class
+)
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,7 +44,7 @@ public class Title {
             targetEntity = Copy.class,
             mappedBy = "title",
             cascade = CascadeType.REMOVE,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Copy> copies = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package com.library.repository;
 
 import com.library.domain.Copy;
+import com.library.domain.Reader;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,12 @@ public interface CopyRepository extends CrudRepository<Copy, Long> {
 
     @Query(nativeQuery = true)
     List<Copy> getAllAvailableCopies(@Param("titleId") Long titleId);
-    List<Copy> findAll();
+
+    @Query(nativeQuery = true)
+    List<Copy> getAllCopies();
+
+    @Query(nativeQuery = true)
+    Optional<Copy> getCopy(@Param("id") Long id);
+
     Copy save(Copy copy);
-    Optional<Copy> findById(Long id);
 }
