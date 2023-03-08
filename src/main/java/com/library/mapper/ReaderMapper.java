@@ -21,8 +21,7 @@ public class ReaderMapper {
     public Reader mapToReader(final SavedReaderDto savedReaderDto) {
         return new Reader(
                 savedReaderDto.getFirstName(),
-                savedReaderDto.getLastName(),
-                savedReaderDto.getSignUpDate()
+                savedReaderDto.getLastName()
         );
     }
 

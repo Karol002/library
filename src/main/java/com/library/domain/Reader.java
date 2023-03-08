@@ -51,10 +51,10 @@ public class Reader {
     )
     private List<Borrow> borrows = new ArrayList<>();
 
-    public Reader(String firstName, String lastName, LocalDate signUpDate) {
+    public Reader(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.signUpDate = signUpDate;
+        this.signUpDate = LocalDate.now();
     }
 
     public Reader(Long id, String firstName, String lastName, LocalDate signUpDate) {
