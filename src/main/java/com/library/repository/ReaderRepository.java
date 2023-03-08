@@ -1,6 +1,5 @@
 package com.library.repository;
 
-import com.library.domain.Borrow;
 import com.library.domain.Reader;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

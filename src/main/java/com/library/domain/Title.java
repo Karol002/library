@@ -29,17 +29,25 @@ import java.util.List;
 @Entity
 @Table(name = "TITLES")
 public class Title {
+
     @Id
     @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;
+
+    @NotNull
     @Column(name = "TITLE")
     private String title;
+
+    @NotNull
     @Column(name = "AUTHOR")
     private String author;
+
+    @NotNull
     @Column(name = "PUBLICATION_DATE")
     private LocalDate publicationDate;
+
     @OneToMany(
             targetEntity = Copy.class,
             mappedBy = "title",

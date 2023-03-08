@@ -56,7 +56,7 @@ public class CopyControllerTest {
         CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
         copyDtos.add(copyDto);
 
-        when(copyService.getCopies()).thenReturn(copies);
+        when(copyService.getAllCopies()).thenReturn(copies);
         when(copyMapper.mapToCopyDtoList(copies)).thenReturn(copyDtos);
 
         //When & Then
@@ -80,31 +80,6 @@ public class CopyControllerTest {
 
         //When & Then
         mockMvc.perform(get("/library/copies/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.titleId", is(1)))
-                .andExpect(jsonPath("$.borrowed", is(TEST_STATUS)));
-    }
-
-    @Test
-    void shouldUpdateCopy() throws Exception {
-        //Given
-        Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
-        Copy copy = new Copy(title);
-        CopyDto copyDto = new CopyDto(TEST_ID, TEST_STATUS, TEST_TITLE_ID);
-
-        when(copyMapper.mapToCopy(copyDto)).thenReturn(copy);
-        when(copyMapper.mapToCopyDto(copy)).thenReturn(copyDto);
-        when(copyService.updateCopy(copy)).thenReturn(copy);
-
-        Gson gson = new Gson();
-        String jsonContent = gson.toJson(copyDto);
-
-        //When & Then
-        mockMvc.perform(put("/library/copies")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-                        .content(jsonContent))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.titleId", is(1)))

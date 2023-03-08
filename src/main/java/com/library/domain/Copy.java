@@ -42,6 +42,8 @@ public class Copy {
     @Column(name = "IS_BORROWED")
     private boolean isBorrowed;
 
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TITLE_ID")
     private Title title;

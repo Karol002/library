@@ -1,6 +1,8 @@
 package com.library.service;
 
 import com.library.controller.exception.BorrowNotFoundException;
+import com.library.controller.exception.CopyIsBorrowed;
+import com.library.controller.exception.CopyNotFoundException;
 import com.library.domain.Borrow;
 import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BorrowService {
     private final BorrowRepository borrowRepository;
+    private final CopyService copyService;
 
-    public List<Borrow> getBorrows() {
+    public List<Borrow> getAllBorrows() {
         return borrowRepository.getAllBorrows();
     }
 
@@ -22,20 +25,22 @@ public class BorrowService {
         return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }
 
-    public void deleteBorrow(Long id) {
-        borrowRepository.deleteById(id);
+    public void deleteBorrow(Long id) throws BorrowNotFoundException {
+        if (borrowRepository.getBorrow(id).isPresent()) {
+            borrowRepository.deleteById(id);
+        } else throw new BorrowNotFoundException();
     }
 
-    public void borrowBook(final Borrow borrow) { borrowRepository.save(borrow); }
-    
-    public Borrow updateBorrow(final Borrow borrow) throws BorrowNotFoundException {
-        getBorrow(borrow.getId());
-        return borrowRepository.save(borrow);
-    }
-
-    public Borrow returnBook(final Borrow borrow) throws BorrowNotFoundException {
-        getBorrow(borrow.getId());
+    public Borrow returnCopy(final Borrow borrow) {
+        copyService.returnCopy(borrow.getCopy());
         borrow.setReturnDate(LocalDate.now());
         return borrowRepository.save(borrow);
+    }
+
+    public void saveBorrow(final Borrow borrow) throws CopyNotFoundException, CopyIsBorrowed {
+        if (copyService.isCopyAvailable(borrow.getCopy().getId())) {
+            copyService.borrowCopy(borrow.getCopy());
+            borrowRepository.save(borrow);
+        } else throw new CopyIsBorrowed();
     }
 }

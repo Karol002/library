@@ -24,22 +24,26 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "BORROWS")
 public class Borrow {
+
     @Id
     @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;
 
+    @NotNull
     @Column(name = "BORROW_DATE")
     private LocalDate borrowDate;
 
     @Column(name = "RETURN_DATE")
     private LocalDate returnDate;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "READER_ID")
     private Reader reader;

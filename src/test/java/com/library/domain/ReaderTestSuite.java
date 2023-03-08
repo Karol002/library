@@ -33,9 +33,9 @@ public class ReaderTestSuite {
     @Test
     void testFindReaderById() {
         //Given
-        Reader robJohnson = new Reader("Rob", "Johnson", LocalDate.now());
-        Reader christianSmith = new Reader("Christian", "Smith", LocalDate.now());
-        Reader kimJackson = new Reader( "Kim", "Jackson", LocalDate.now());
+        Reader robJohnson = new Reader("Rob", "Johnson");
+        Reader christianSmith = new Reader("Christian", "Smith");
+        Reader kimJackson = new Reader( "Kim", "Jackson");
 
         readerRepository.save(robJohnson);
         readerRepository.save(christianSmith);
@@ -46,9 +46,9 @@ public class ReaderTestSuite {
         Long christianSmithId = christianSmith.getId();
         Long kimJacksonId = kimJackson.getId();
 
-        Optional<Reader> testReader1 = readerRepository.findById(robJohnsonId);
-        Optional<Reader> testReader2 = readerRepository.findById(christianSmithId);
-        Optional<Reader> testReader3 = readerRepository.findById(kimJacksonId);
+        Optional<Reader> testReader1 = readerRepository.getReader(robJohnsonId);
+        Optional<Reader> testReader2 = readerRepository.getReader(christianSmithId);
+        Optional<Reader> testReader3 = readerRepository.getReader(kimJacksonId);
 
         //Then
         assertEquals(robJohnsonId, testReader1.get().getId());
@@ -60,18 +60,18 @@ public class ReaderTestSuite {
     }
 
     @Test
-    void testFinAllReaders() {
+    void testFindAllReaders() {
         //Given
-        Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
-        Reader christianSmith = new Reader("Christian", "Smith", LocalDate.now());
-        Reader kimJackson = new Reader("Kim", "Jackson", LocalDate.now());
+        Reader robJohnson = new Reader("Rob", "Johnson");
+        Reader christianSmith = new Reader("Christian", "Smith");
+        Reader kimJackson = new Reader( "Kim", "Jackson");
 
         readerRepository.save(robJohnson);
         readerRepository.save(christianSmith);
         readerRepository.save(kimJackson);
 
         //When
-        long readers = readerRepository.count();
+        int readers = readerRepository.getAllReaders().size();
 
         //Then
         assertEquals(3, readers);
@@ -83,9 +83,9 @@ public class ReaderTestSuite {
     @Test
     void testDeleteReaderById() {
         //Given
-        Reader robJohnson = new Reader("Rob", "Johnson", LocalDate.now());
-        Reader christianSmith = new Reader("Christian", "Smith", LocalDate.now());
-        Reader kimJackson = new Reader("Kim", "Jackson", LocalDate.now());
+        Reader robJohnson = new Reader("Rob", "Johnson");
+        Reader christianSmith = new Reader("Christian", "Smith");
+        Reader kimJackson = new Reader( "Kim", "Jackson");
 
         readerRepository.save(robJohnson);
         readerRepository.save(christianSmith);
@@ -99,7 +99,7 @@ public class ReaderTestSuite {
         readerRepository.deleteById(christianSmithId);
         readerRepository.deleteById(kimJacksonId);
 
-        List<Reader> readers = readerRepository.findAll();
+        List<Reader> readers = readerRepository.getAllReaders();
 
         //Then
         assertEquals(1, readers.size());
@@ -113,12 +113,12 @@ public class ReaderTestSuite {
     void testCascadeWhenRemoveBorrow() {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
-        Reader robJohnson = new Reader( "Rob", "Johnson", LocalDate.now());
-        Reader christianSmith = new Reader( "Christian", "Smith", LocalDate.now());
+        Reader robJohnson = new Reader( "Rob", "Johnson");
+        Reader christianSmith = new Reader( "Christian", "Smith");
         Copy firstCopy = new Copy(humanKind);
         Copy secondCopy = new Copy(humanKind);
-        Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
-        Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30),  secondCopy, christianSmith);
+        Borrow firstBorrow = new Borrow(firstCopy, robJohnson);
+        Borrow secondBorrow = new Borrow(secondCopy, christianSmith);
 
         humanKind.getCopies().add(firstCopy);
         humanKind.getCopies().add(secondCopy);

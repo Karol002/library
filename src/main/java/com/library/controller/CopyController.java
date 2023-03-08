@@ -9,7 +9,6 @@ import com.library.mapper.CopyMapper;
 import com.library.service.CopyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +23,8 @@ public class CopyController {
     private final CopyMapper copyMapper;
 
     @GetMapping
-    public ResponseEntity<List<CopyDto>> getCopies() {
-        List<Copy> copies = copyService.getCopies();
+    public ResponseEntity<List<CopyDto>> getAllCopies() {
+        List<Copy> copies = copyService.getAllCopies();
         return ResponseEntity.ok(copyMapper.mapToCopyDtoList(copies));
     }
 
@@ -40,7 +39,7 @@ public class CopyController {
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteCopy(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCopy(@PathVariable Long id) throws CopyNotFoundException {
         copyService.deleteCopy(id);
         return ResponseEntity.ok().build();
     }
@@ -50,12 +49,5 @@ public class CopyController {
         Copy copy = copyMapper.mapToCopy(new SavedCopyDto(titleId));
         copyService.saveCopy(copy);
         return ResponseEntity.ok().build();
-    }
-
-    @PutMapping
-    public ResponseEntity<CopyDto> updateCopy(@RequestBody CopyDto copyDto) throws TitleNotFoundException, CopyNotFoundException {
-        Copy copy = copyMapper.mapToCopy(copyDto);
-        Copy savedCopy = copyService.updateCopy(copy);
-        return ResponseEntity.ok(copyMapper.mapToCopyDto(savedCopy));
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class TitleService {
     private final TitleRepository titleRepository;
 
-    public List<Title> getTitles() {
+    public List<Title> getAllTitles() {
         return titleRepository.getAllTitles();
     }
 
@@ -21,14 +21,16 @@ public class TitleService {
         return titleRepository.getTitle(id).orElseThrow(TitleNotFoundException::new);
     }
 
-    public void deleteTitle(Long id) {
-        titleRepository.deleteById(id);
+    public void deleteTitle(Long id) throws TitleNotFoundException {
+        if (titleRepository.getTitle(id).isPresent()) {
+            titleRepository.deleteById(id);
+        } else throw new TitleNotFoundException();
+    }
+
+    public Title updateTitle(final  Title title) throws TitleNotFoundException {
+        if (titleRepository.getTitle(title.getId()).isEmpty()) throw new TitleNotFoundException();
+        return titleRepository.save(title);
     }
 
     public void saveTitle(final Title title) { titleRepository.save(title); }
-
-    public Title updateTitle(final  Title title) throws TitleNotFoundException {
-        getTitle(title.getId());
-        return titleRepository.save(title);
-    }
 }

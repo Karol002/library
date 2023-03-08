@@ -19,6 +19,13 @@ public class BorrowMapper {
     private final ReaderService readerService;
     private final CopyService copyService;
 
+    public Borrow mapToBorrow(SavedBorrowDto savedBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
+        return new Borrow(
+                copyService.getCopy(savedBorrowDto.getCopyId()),
+                readerService.getReader(savedBorrowDto.getReaderId())
+        );
+    }
+
     public Borrow mapToBorrow(BorrowDto borrowDto) throws CopyNotFoundException, ReaderNotFoundException {
         return new Borrow(
                 borrowDto.getId(),
@@ -26,13 +33,6 @@ public class BorrowMapper {
                 borrowDto.getReturnDate(),
                 copyService.getCopy(borrowDto.getCopyId()),
                 readerService.getReader(borrowDto.getReaderId())
-        );
-    }
-
-    public Borrow mapToBorrow(SavedBorrowDto savedBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
-        return new Borrow(
-                copyService.getCopy(savedBorrowDto.getCopyId()),
-                readerService.getReader(savedBorrowDto.getReaderId())
         );
     }
 

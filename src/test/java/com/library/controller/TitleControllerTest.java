@@ -55,7 +55,7 @@ public class TitleControllerTest {
         Title title = new Title(TEST_TITLE, TEST_AUTHOR, TEST_DATE);
         titles.add(title);
 
-        when(titleService.getTitles()).thenReturn(titles);
+        when(titleService.getAllTitles()).thenReturn(titles);
         when(titleMapper.mapToTitleDtoList(titles)).thenReturn(titleDtos);
 
         //When & Then

@@ -55,7 +55,7 @@ public class ReaderControllerTest {
         Reader reader = new Reader(TEST_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
         readers.add(reader);
 
-        when(readerService.getReaders()).thenReturn(readers);
+        when(readerService.getAllReaders()).thenReturn(readers);
         when(readerMapper.mapToReaderDtoList(readers)).thenReturn(readerDtos);
 
         //When & Then
@@ -116,7 +116,7 @@ public class ReaderControllerTest {
     @Test
     void shouldCreateReader() throws Exception {
         //Given
-        SavedReaderDto readerDto = new SavedReaderDto(TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
+        SavedReaderDto readerDto = new SavedReaderDto(TEST_FIRST_NAME, TEST_LAST_NAME);
         Reader reader = new Reader(TEST_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
 
         when(readerMapper.mapToReader(readerDto)).thenReturn(reader);

@@ -75,7 +75,7 @@ public class BorrowControllerTest {
         borrowDtos.add(borrowDto);
 
 
-        when(borrowService.getBorrows()).thenReturn(borrows);
+        when(borrowService.getAllBorrows()).thenReturn(borrows);
         when(borrowMapper.mapToBorrowDtoList(borrows)).thenReturn(borrowDtos);
 
         //When & Then
@@ -112,7 +112,7 @@ public class BorrowControllerTest {
     }
 
     @Test
-    void shouldUpdateBorrow() throws Exception {
+    void shouldReturnBorrow() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
@@ -120,9 +120,9 @@ public class BorrowControllerTest {
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
         BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
 
-        when(borrowMapper.mapToBorrow(borrowDto)).thenReturn(borrow);
+        when(borrowService.getBorrow(TEST_ID)).thenReturn(borrow);
         when(borrowMapper.mapToBorrowDto(borrow)).thenReturn(borrowDto);
-        when(borrowService.updateBorrow(borrow)).thenReturn(borrow);
+        when(borrowService.returnCopy(borrow)).thenReturn(borrow);
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
@@ -130,10 +130,9 @@ public class BorrowControllerTest {
         String jsonContent = gson.toJson(borrowDto);
 
         //When & Then
-        mockMvc.perform(put("/library/borrows")
+        mockMvc.perform(put("/library/borrows/return/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-                        .content(jsonContent))
+                        .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.copyId", is(1)))

@@ -10,20 +10,20 @@ import java.util.List;
 @Service
 public class TitleMapper {
 
+    public Title mapToTitle(final SavedTitleDto savedTitleDto) {
+        return new Title(
+                savedTitleDto.getAuthor(),
+                savedTitleDto.getTitle(),
+                savedTitleDto.getPublicationDate()
+        );
+    }
+
     public Title mapToTitle(final TitleDto titleDto) {
         return new Title(
                 titleDto.getId(),
                 titleDto.getAuthor(),
                 titleDto.getTitle(),
                 titleDto.getPublicationDate()
-        );
-    }
-
-    public Title mapToTitle(final SavedTitleDto savedTitleDto) {
-        return new Title(
-                savedTitleDto.getAuthor(),
-                savedTitleDto.getTitle(),
-                savedTitleDto.getPublicationDate()
         );
     }
 

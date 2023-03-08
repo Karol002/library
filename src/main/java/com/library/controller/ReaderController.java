@@ -23,8 +23,8 @@ public class ReaderController {
     private final ReaderMapper readerMapper;
 
     @GetMapping
-    public ResponseEntity<List<ReaderDto>> getReaders() {
-        List<Reader> readers = readerService.getReaders();
+    public ResponseEntity<List<ReaderDto>> getAllReaders() {
+        List<Reader> readers = readerService.getAllReaders();
         return ResponseEntity.ok(readerMapper.mapToReaderDtoList(readers));
     }
 
@@ -34,7 +34,7 @@ public class ReaderController {
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteReader(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteReader(@PathVariable Long id) throws ReaderNotFoundException {
         readerService.deleteReader(id);
         return ResponseEntity.ok().build();
     }

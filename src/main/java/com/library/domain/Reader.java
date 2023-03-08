@@ -28,18 +28,22 @@ import java.util.List;
 @Entity
 @Table(name = "READERS")
 public class Reader {
+
     @Id
     @NotNull
     @GeneratedValue
     @Column(name="ID", unique=true)
     private Long id;
 
+    @NotNull
     @Column(name = "FIRST_NAME")
     private String firstName;
 
+    @NotNull
     @Column(name = "LAST_NAME")
     private String lastName;
 
+    @NotNull
     @Column(name = "SIGN_UP_DATE")
     private LocalDate signUpDate;
 

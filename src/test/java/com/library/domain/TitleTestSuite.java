@@ -37,9 +37,9 @@ public class TitleTestSuite {
         Long greekMythsId = greekMyths.getId();
         Long chineseId = chinese.getId();
 
-        Optional<Title> testBook1 = titleRepository.findById(humanKindId);
-        Optional<Title> testBook2 = titleRepository.findById(greekMythsId);
-        Optional<Title> testBook3 = titleRepository.findById(chineseId);
+        Optional<Title> testBook1 = titleRepository.getTitle(humanKindId);
+        Optional<Title> testBook2 = titleRepository.getTitle(greekMythsId);
+        Optional<Title> testBook3 = titleRepository.getTitle(chineseId);
 
         //Then
         assertEquals(humanKindId, testBook1.get().getId());
@@ -62,7 +62,7 @@ public class TitleTestSuite {
         titleRepository.save(chinese);
 
         //When
-        long books = titleRepository.count();
+        int books = titleRepository.getAllTitles().size();
 
         //Then
         assertEquals(3, books);
