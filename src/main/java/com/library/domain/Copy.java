@@ -9,9 +9,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQuery(
+@NamedNativeQuery(
         name = "Copy.getAllCopies",
-        query = "SELECT c FROM Copy c JOIN FETCH c.title"
+        query = "SELECT * FROM copies c JOIN titles t ON c.TITLE_ID = t.ID",
+        resultClass = Copy.class
 )
 
 @NamedNativeQuery(
@@ -41,7 +42,6 @@ public class Copy {
     @NotNull
     @Column(name = "IS_BORROWED")
     private boolean isBorrowed;
-
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

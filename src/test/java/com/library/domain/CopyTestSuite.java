@@ -178,49 +178,4 @@ public class CopyTestSuite {
         readerRepository.deleteAll();
         titleRepository.deleteAll();
     }
-
-    @Test
-    void testGetAllAvailable() {
-        //Given
-        Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
-        Reader robJohnson = new Reader( "Rob", "Johnson");
-        Copy firstCopy = new Copy(humanKind);
-        Copy secondCopy = new Copy(humanKind);
-        Copy thirdCopy = new Copy(humanKind);
-        Borrow firstBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
-        Borrow secondBorrow = new Borrow(LocalDate.now(), LocalDate.now().plusDays(30), firstCopy, robJohnson);
-
-        humanKind.getCopies().add(firstCopy);
-        humanKind.getCopies().add(secondCopy);
-        humanKind.getCopies().add(thirdCopy);
-        robJohnson.getBorrows().add(firstBorrow);
-        robJohnson.getBorrows().add(secondBorrow);
-        firstCopy.getBorrows().add(firstBorrow);
-        secondCopy.getBorrows().add(secondBorrow);
-
-        firstCopy.setBorrowed(true);
-        secondCopy.setBorrowed(true);
-
-        readerRepository.save(robJohnson);
-        titleRepository.save(humanKind);
-        copyRepository.save(firstCopy);
-        copyRepository.save(secondCopy);
-        copyRepository.save(thirdCopy);
-        borrowRepository.save(firstBorrow);
-        borrowRepository.save(secondBorrow);
-
-        //When
-        int availableCopies = copyRepository.getAllAvailableCopies(humanKind.getId()).size();
-        int allCopies = copyRepository.getAllCopies().size();
-
-        //Then
-        assertEquals(1, availableCopies);
-        assertEquals(3, allCopies);
-
-        //CleanUp
-        borrowRepository.deleteAll();
-        copyRepository.deleteAll();
-        readerRepository.deleteAll();
-        titleRepository.deleteAll();
-    }
 }

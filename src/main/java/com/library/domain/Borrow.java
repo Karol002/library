@@ -8,14 +8,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@NamedQuery(
+@NamedNativeQuery(
         name = "Borrow.getAllBorrows",
-        query = "SELECT b FROM Borrow b JOIN FETCH b.copy JOIN FETCH b.reader"
+        query = "SELECT * FROM borrows b JOIN copies c ON b.COPY_ID = c.ID JOIN readers r ON b.READER_ID = r.ID",
+        resultClass = Borrow.class
 )
 
-@NamedQuery(
+@NamedNativeQuery(
         name = "Borrow.getBorrow",
-        query = "SELECT b FROM Borrow b JOIN FETCH b.copy JOIN FETCH b.reader WHERE b.id = :id"
+        query = "SELECT * FROM borrows b JOIN copies c ON b.COPY_ID = c.ID JOIN readers r ON b.READER_ID = r.ID WHERE b.ID = :id",
+        resultClass = Borrow.class
 )
 
 @Data
@@ -39,12 +41,12 @@ public class Borrow {
     private LocalDate returnDate;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "READER_ID")
     private Reader reader;
 
