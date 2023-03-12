@@ -1,53 +1,57 @@
-package com.library.domain;
+package com.library.service;
 
-import com.library.repository.CopyRepository;
-import com.library.repository.TitleRepository;
+import com.library.config.Deleter;
+import com.library.controller.exception.TitleNotFoundException;
+import com.library.domain.Copy;
+import com.library.domain.Title;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class TitleTestSuite {
+public class TitleServiceTest {
 
     @Autowired
-    private TitleRepository titleRepository;
+    private TitleService titleService;
 
     @Autowired
-    private CopyRepository copyRepository;
+    private CopyService copyService;
+
+    @Autowired
+    private Deleter deleter;
 
     @Test
-    void testFindBookById() {
+    void testFindBookById() throws TitleNotFoundException {
         //Given
         Title humanKind = new Title("HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Title greekMyths = new Title("GREEK MYTHS", "JAN LEWIS", LocalDate.of(2010, 11, 16));
         Title chinese = new Title("Chinese", "Michael Jordan", LocalDate.of(2020, 1, 12));
 
-        titleRepository.save(humanKind);
-        titleRepository.save(greekMyths);
-        titleRepository.save(chinese);
+        titleService.saveTitle(humanKind);
+        titleService.saveTitle(greekMyths);
+        titleService.saveTitle(chinese);
 
         //When
         Long humanKindId = humanKind.getId();
         Long greekMythsId = greekMyths.getId();
         Long chineseId = chinese.getId();
 
-        Optional<Title> testBook1 = titleRepository.getTitle(humanKindId);
-        Optional<Title> testBook2 = titleRepository.getTitle(greekMythsId);
-        Optional<Title> testBook3 = titleRepository.getTitle(chineseId);
+        Title testBook1 = titleService.getTitle(humanKindId);
+        Title testBook2 = titleService.getTitle(greekMythsId);
+        Title testBook3 = titleService.getTitle(chineseId);
 
         //Then
-        assertEquals(humanKindId, testBook1.get().getId());
-        assertEquals(greekMythsId, testBook2.get().getId());
-        assertEquals(chineseId, testBook3.get().getId());
+        assertEquals(humanKindId, testBook1.getId());
+        assertEquals(greekMythsId, testBook2.getId());
+        assertEquals(chineseId, testBook3.getId());
 
         //CleanUp
-        titleRepository.deleteAll();
+        deleter.deleteFromTitles();
     }
 
     @Test
@@ -57,46 +61,47 @@ public class TitleTestSuite {
         Title greekMyths = new Title("GREEK MYTHS", "JAN LEWIS", LocalDate.of(2010, 11, 16));
         Title chinese = new Title("Chinese", "Michael Jordan", LocalDate.of(2020, 1, 12));
 
-        titleRepository.save(humanKind);
-        titleRepository.save(greekMyths);
-        titleRepository.save(chinese);
+        titleService.saveTitle(humanKind);
+        titleService.saveTitle(greekMyths);
+        titleService.saveTitle(chinese);
 
         //When
-        int books = titleRepository.getAllTitles().size();
+        int books = titleService.getAllTitles().size();
 
         //Then
         assertEquals(3, books);
 
         //CleanUp
-        titleRepository.deleteAll();
+        deleter.deleteFromTitles();
     }
 
     @Test
-    void testDeleteBookById() {
+    void testDeleteBookById() throws TitleNotFoundException {
+        //Given
         Title humanKind = new Title("HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Title greekMyths = new Title("GREEK MYTHS", "JAN LEWIS", LocalDate.of(2010, 11, 16));
         Title chinese = new Title("Chinese", "Michael Jordan", LocalDate.of(2020, 1, 12));
 
-        titleRepository.save(humanKind);
-        titleRepository.save(greekMyths);
-        titleRepository.save(chinese);
+        titleService.saveTitle(humanKind);
+        titleService.saveTitle(greekMyths);
+        titleService.saveTitle(chinese);
 
         //When
         Long humanKindId = humanKind.getId();
         Long greekMythsId = greekMyths.getId();
         Long chineseId = chinese.getId();
 
-        titleRepository.deleteById(chineseId);
-        titleRepository.deleteById(greekMythsId);
+        titleService.deleteTitle(chineseId);
+        titleService.deleteTitle(greekMythsId);
 
-        List<Title> books = titleRepository.getAllTitles();
+        List<Title> books = titleService.getAllTitles();
 
         //Then
         assertEquals(1, books.size());
         assertEquals(humanKindId, books.get(0).getId());
 
         //CleanUp
-        titleRepository.deleteAll();
+        deleter.deleteFromTitles();
     }
 
     @Test
@@ -106,24 +111,21 @@ public class TitleTestSuite {
         Copy firstCopy = new Copy(humanKind);
         Copy secondCopy = new Copy(humanKind);
 
-        humanKind.getCopies().add(firstCopy);
-        humanKind.getCopies().add(secondCopy);
-
-        titleRepository.save(humanKind);
-        copyRepository.save(firstCopy);
-        copyRepository.save(secondCopy);
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(firstCopy);
+        copyService.saveCopy(secondCopy);
 
         //When
-        long titlesSizeBeforeDelete = titleRepository.count();
-        copyRepository.deleteAll();
-        long titlesSizeAfterDelete = titleRepository.count();
+        int titlesSizeBeforeDelete = titleService.getAllTitles().size();
+        deleter.deleteFromCopies();
+        int titlesSizeAfterDelete = titleService.getAllTitles().size();
 
         //Then
         assertEquals(1, titlesSizeBeforeDelete);
         assertEquals(1, titlesSizeAfterDelete);
 
         //CleanUp
-        titleRepository.deleteAll();
-        copyRepository.deleteAll();
+        deleter.deleteFromCopies();
+        deleter.deleteFromTitles();
     }
 }

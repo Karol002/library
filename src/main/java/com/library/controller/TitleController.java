@@ -22,6 +22,7 @@ public class TitleController {
     private final TitleService titleService;
     private final TitleMapper titleMapper;
 
+
     @GetMapping
     public ResponseEntity<List<TitleDto>> getAllTitles() {
         List<Title> titles = titleService.getAllTitles();
