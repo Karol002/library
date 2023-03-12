@@ -1,20 +1,19 @@
-package com.library.domain;
+package com.library.service;
 
 import com.library.config.Deleter;
 import com.library.controller.exception.BorrowNotFoundException;
 import com.library.controller.exception.CopyIsBorrowed;
 import com.library.controller.exception.CopyNotFoundException;
-import com.library.service.BorrowService;
-import com.library.service.CopyService;
-import com.library.service.ReaderService;
-import com.library.service.TitleService;
+import com.library.domain.Borrow;
+import com.library.domain.Copy;
+import com.library.domain.Reader;
+import com.library.domain.Title;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,10 +22,13 @@ public class BorrowServiceTest {
 
     @Autowired
     private TitleService titleService;
+
     @Autowired
     private ReaderService readerService;
+
     @Autowired
     private CopyService copyService;
+
     @Autowired
     private BorrowService borrowService;
 
