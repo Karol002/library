@@ -1,7 +1,8 @@
 package com.library.service;
 
 import com.library.controller.exception.BorrowNotFoundException;
-import com.library.controller.exception.CopyIsBorrowed;
+import com.library.controller.exception.OpenBorrowException;
+import com.library.controller.exception.CopyIsBorrowedException;
 import com.library.controller.exception.CopyNotFoundException;
 import com.library.domain.Borrow;
 import com.library.repository.BorrowRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,9 +27,12 @@ public class BorrowService {
         return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }
 
-    public void deleteBorrow(Long id) throws BorrowNotFoundException {
+    public void deleteBorrow(Long id) throws BorrowNotFoundException, CopyNotFoundException, OpenBorrowException {
         if (borrowRepository.getBorrow(id).isPresent()) {
-            borrowRepository.deleteById(id);
+            Optional<Borrow> borrow = borrowRepository.getBorrow(id);
+            if (copyService.isCopyAvailable(borrow.get().getCopy().getId())) {
+                borrowRepository.deleteById(id);
+            } else throw new OpenBorrowException();
         } else throw new BorrowNotFoundException();
     }
 
@@ -37,10 +42,10 @@ public class BorrowService {
         return borrowRepository.save(borrow);
     }
 
-    public void saveBorrow(final Borrow borrow) throws CopyNotFoundException, CopyIsBorrowed {
+    public void saveBorrow(final Borrow borrow) throws CopyNotFoundException, CopyIsBorrowedException {
         if (copyService.isCopyAvailable(borrow.getCopy().getId())) {
             copyService.borrowCopy(borrow.getCopy());
             borrowRepository.save(borrow);
-        } else throw new CopyIsBorrowed();
+        } else throw new CopyIsBorrowedException();
     }
 }

@@ -2,8 +2,9 @@ package com.library.service;
 
 import com.library.config.Deleter;
 import com.library.controller.exception.BorrowNotFoundException;
-import com.library.controller.exception.CopyIsBorrowed;
+import com.library.controller.exception.CopyIsBorrowedException;
 import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.OpenBorrowException;
 import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
@@ -36,7 +37,7 @@ public class BorrowServiceTest {
     private Deleter deleter;
 
     @Test
-    void testFindAllBorrows() throws CopyNotFoundException, CopyIsBorrowed {
+    void testFindAllBorrows() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -65,7 +66,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testFindBorrowById() throws CopyNotFoundException, CopyIsBorrowed, BorrowNotFoundException {
+    void testFindBorrowById() throws CopyNotFoundException, CopyIsBorrowedException, BorrowNotFoundException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -96,7 +97,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testDeleteBorrowById() throws CopyNotFoundException, CopyIsBorrowed, BorrowNotFoundException {
+    void testDeleteBorrowById() throws CopyNotFoundException, CopyIsBorrowedException, BorrowNotFoundException, OpenBorrowException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -115,6 +116,7 @@ public class BorrowServiceTest {
         borrowService.saveBorrow(secondBorrow);
 
         //When
+        borrowService.returnCopy(secondBorrow);
         borrowService.deleteBorrow(secondBorrow.getId());
         List<Borrow> borrows = borrowService.getAllBorrows();
 
@@ -127,7 +129,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testCascadeWhenRemoveCopy() throws CopyNotFoundException, CopyIsBorrowed {
+    void testCascadeWhenRemoveCopy() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -159,7 +161,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testCascadeWhenRemoveReader() throws CopyNotFoundException, CopyIsBorrowed {
+    void testCascadeWhenRemoveReader() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -191,7 +193,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testBorrowCopy() throws CopyNotFoundException, CopyIsBorrowed {
+    void testBorrowCopy() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
@@ -228,7 +230,7 @@ public class BorrowServiceTest {
     }
 
     @Test
-    void testReturnCopy() throws CopyNotFoundException, CopyIsBorrowed {
+    void testReturnCopy() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");

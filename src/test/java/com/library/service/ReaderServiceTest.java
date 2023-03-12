@@ -1,7 +1,7 @@
 package com.library.service;
 
 import com.library.config.Deleter;
-import com.library.controller.exception.CopyIsBorrowed;
+import com.library.controller.exception.CopyIsBorrowedException;
 import com.library.controller.exception.CopyNotFoundException;
 import com.library.controller.exception.ReaderNotFoundException;
 import com.library.domain.Borrow;
@@ -117,7 +117,7 @@ public class ReaderServiceTest {
     }
 
     @Test
-    void testCascadeWhenRemoveBorrow() throws CopyNotFoundException, CopyIsBorrowed {
+    void testCascadeWhenRemoveBorrow() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");

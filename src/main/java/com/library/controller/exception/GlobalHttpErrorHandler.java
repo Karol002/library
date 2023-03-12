@@ -29,8 +29,13 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("Reader with given id doesn't exist", HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CopyIsBorrowed.class)
-    public ResponseEntity<Object> handleCopyIsBorrowed(CopyIsBorrowed exception) {
+    @ExceptionHandler(CopyIsBorrowedException.class)
+    public ResponseEntity<Object> handleCopyIsBorrowedException(CopyIsBorrowedException exception) {
         return new ResponseEntity<>("Copy is borrowed", HttpStatus.IM_USED);
+    }
+
+    @ExceptionHandler(OpenBorrowException.class)
+    public ResponseEntity<Object> handleOpenBorrowException(CopyIsBorrowedException exception) {
+        return new ResponseEntity<>("Copy is not returned, can not delete borrow", HttpStatus.IM_USED);
     }
 }

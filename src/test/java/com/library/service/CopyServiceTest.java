@@ -1,7 +1,7 @@
 package com.library.service;
 
 import com.library.config.Deleter;
-import com.library.controller.exception.CopyIsBorrowed;
+import com.library.controller.exception.CopyIsBorrowedException;
 import com.library.controller.exception.CopyNotFoundException;
 import com.library.controller.exception.TitleNotFoundException;
 import com.library.domain.Borrow;
@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class CopyServiceTest {
@@ -132,7 +132,7 @@ public class CopyServiceTest {
     }
 
     @Test
-    void testCascadeWhenRemoveBorrow() throws CopyNotFoundException, CopyIsBorrowed {
+    void testCascadeWhenRemoveBorrow() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
         Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
         Reader robJohnson = new Reader( "Rob", "Johnson");
