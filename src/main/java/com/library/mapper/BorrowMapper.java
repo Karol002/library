@@ -1,7 +1,7 @@
 package com.library.mapper;
 
-import com.library.controller.exception.CopyNotFoundException;
-import com.library.controller.exception.ReaderNotFoundException;
+import com.library.controller.exception.single.CopyNotFoundException;
+import com.library.controller.exception.single.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
 import com.library.domain.dto.post.SavedBorrowDto;
@@ -30,6 +30,7 @@ public class BorrowMapper {
                 borrowDto.getId(),
                 borrowDto.getBorrowDate(),
                 borrowDto.getReturnDate(),
+                borrowDto.isClosed(),
                 copyService.getCopy(borrowDto.getCopyId()),
                 readerService.getReader(borrowDto.getReaderId())
         );
@@ -39,6 +40,7 @@ public class BorrowMapper {
         return new BorrowDto(borrow.getId(),
                 borrow.getBorrowDate(),
                 borrow.getReturnDate(),
+                borrow.isClosed(),
                 borrow.getCopy().getId(),
                 borrow.getReader().getId());
     }

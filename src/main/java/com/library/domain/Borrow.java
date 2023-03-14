@@ -20,6 +20,12 @@ import java.time.LocalDate;
         resultClass = Borrow.class
 )
 
+@NamedNativeQuery(
+        name = "Borrow.getAllBorrowsByReaderId",
+        query = "SELECT * FROM borrows WHERE READER_ID = :readerId",
+        resultClass = Borrow.class
+)
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,6 +47,10 @@ public class Borrow {
     private LocalDate returnDate;
 
     @NotNull
+    @Column(name = "CLOSED")
+    private boolean closed;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COPY_ID")
     private Copy copy;
@@ -50,15 +60,17 @@ public class Borrow {
     @JoinColumn(name = "READER_ID")
     private Reader reader;
 
-    public Borrow(LocalDate borrowDate, LocalDate returnDate, Copy copy, Reader reader) {
+    public Borrow(LocalDate borrowDate, LocalDate returnDate, boolean closed, Copy copy, Reader reader) {
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        this.closed = closed;
         this.copy = copy;
         this.reader = reader;
     }
 
     public Borrow(Copy copy, Reader reader) {
         borrowDate = LocalDate.now();
+        closed = false;
         this.copy = copy;
         this.reader = reader;
     }

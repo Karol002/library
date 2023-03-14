@@ -1,6 +1,6 @@
 package com.library.service;
 
-import com.library.controller.exception.TitleNotFoundException;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Title;
 import com.library.repository.TitleRepository;
 import lombok.RequiredArgsConstructor;

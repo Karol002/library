@@ -1,6 +1,8 @@
 package com.library.controller;
 
-import com.library.controller.exception.ReaderNotFoundException;
+import com.library.controller.exception.single.OpenBorrowException;
+import com.library.controller.exception.single.ReaderHaveBorrowedCopy;
+import com.library.controller.exception.single.ReaderNotFoundException;
 import com.library.domain.Reader;
 import com.library.domain.dto.ReaderDto;
 import com.library.domain.dto.post.SavedReaderDto;
@@ -40,7 +42,7 @@ public class ReaderController {
 
     @Operation(summary = "Delete reader by given id")
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteReader(@PathVariable Long id) throws ReaderNotFoundException {
+    public ResponseEntity<Void> deleteReader(@PathVariable Long id) throws ReaderNotFoundException, ReaderHaveBorrowedCopy {
         readerService.deleteReader(id);
         return ResponseEntity.ok().build();
     }

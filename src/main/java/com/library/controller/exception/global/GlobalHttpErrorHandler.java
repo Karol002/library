@@ -1,5 +1,6 @@
-package com.library.controller.exception;
+package com.library.controller.exception.global;
 
+import com.library.controller.exception.single.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,5 +38,10 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(OpenBorrowException.class)
     public ResponseEntity<Object> handleOpenBorrowException(CopyIsBorrowedException exception) {
         return new ResponseEntity<>("Copy is not returned, can not delete borrow", HttpStatus.IM_USED);
+    }
+
+    @ExceptionHandler(ReaderHaveBorrowedCopy.class)
+    public ResponseEntity<Object> handleReaderHaveBorrowedCopyException(ReaderHaveBorrowedCopy exception) {
+        return new ResponseEntity<>("Copy is not returned, can not delete reader", HttpStatus.IM_USED);
     }
 }

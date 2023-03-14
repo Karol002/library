@@ -1,7 +1,7 @@
 package com.library.controller;
 
-import com.library.controller.exception.CopyNotFoundException;
-import com.library.controller.exception.TitleNotFoundException;
+import com.library.controller.exception.single.CopyNotFoundException;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
 import com.library.domain.dto.post.SavedCopyDto;

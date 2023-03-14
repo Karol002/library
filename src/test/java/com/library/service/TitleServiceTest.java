@@ -1,7 +1,7 @@
 package com.library.service;
 
 import com.library.config.Deleter;
-import com.library.controller.exception.TitleNotFoundException;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.Title;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.library.controller;
 
-import com.library.controller.exception.*;
+import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
 import com.library.domain.dto.post.SavedBorrowDto;
@@ -32,6 +32,13 @@ public class BorrowController {
         return ResponseEntity.ok(borrowMapper.mapToBorrowDtoList(borrows));
     }
 
+    @Operation(summary = "Get all borrows for select reader by given reader id")
+    @GetMapping(value = "/reader/{readerId}")
+    public ResponseEntity<List<BorrowDto>> getOpenBorrowsForSelectedReader(@PathVariable Long readerId) {
+        List<Borrow> borrows = borrowService.getAllBorrowsByReaderId(readerId);
+        return ResponseEntity.ok(borrowMapper.mapToBorrowDtoList(borrows));
+    }
+
     @Operation(summary = "Get single borrow by given id")
     @GetMapping(value = "{id}")
     public ResponseEntity<BorrowDto> getBorrow(@PathVariable Long id) throws BorrowNotFoundException {
@@ -45,7 +52,7 @@ public class BorrowController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "Return single copy to library by given zborrow id")
+    @Operation(summary = "Return single copy to library by given borrow id")
     @PutMapping(value = "/return/{id}")
     public ResponseEntity<BorrowDto> returnCopy(@PathVariable Long id) throws BorrowNotFoundException {
         Borrow borrow = borrowService.getBorrow(id);

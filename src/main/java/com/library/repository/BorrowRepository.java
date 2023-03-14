@@ -18,6 +18,9 @@ public interface BorrowRepository extends CrudRepository<Borrow, Long> {
     List<Borrow> getAllBorrows();
 
     @Query(nativeQuery = true)
+    List<Borrow> getAllBorrowsByReaderId(@Param("readerId") Long id);
+
+    @Query(nativeQuery = true)
     Optional<Borrow> getBorrow(@Param("id") Long id);
 
     Borrow save(Borrow borrow);

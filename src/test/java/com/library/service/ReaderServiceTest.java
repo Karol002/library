@@ -1,9 +1,7 @@
 package com.library.service;
 
 import com.library.config.Deleter;
-import com.library.controller.exception.CopyIsBorrowedException;
-import com.library.controller.exception.CopyNotFoundException;
-import com.library.controller.exception.ReaderNotFoundException;
+import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
@@ -88,7 +86,7 @@ public class ReaderServiceTest {
     }
 
     @Test
-    void testDeleteReaderById() throws ReaderNotFoundException {
+    void testDeleteReaderById() throws ReaderNotFoundException, ReaderHaveBorrowedCopy {
         //Given
         Reader robJohnson = new Reader("Rob", "Johnson");
         Reader christianSmith = new Reader("Christian", "Smith");

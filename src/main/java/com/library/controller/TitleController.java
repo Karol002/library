@@ -1,6 +1,6 @@
 package com.library.controller;
 
-import com.library.controller.exception.TitleNotFoundException;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Title;
 import com.library.domain.dto.TitleDto;
 import com.library.domain.dto.post.SavedTitleDto;

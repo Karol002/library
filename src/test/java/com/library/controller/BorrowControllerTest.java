@@ -42,6 +42,7 @@ public class BorrowControllerTest {
     private static final String TEST_LAST_NAME = "Test last name";
     private static final String TEST_AUTHOR = "Test author";
     private static final String TEST_TITLE = "Test title";
+    private static final boolean TEST_BORROW_STATUS = false;
     private static final Long TEST_READER_ID = 1L;
     private static final Long TEST_TITLE_ID = 1L;
     private static final Long TEST_COPY_ID = 1L;
@@ -68,10 +69,10 @@ public class BorrowControllerTest {
         Copy copy = new Copy(title);
 
         List<Borrow> borrows = new ArrayList<>();
-        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
         borrows.add(borrow);
         List<BorrowDto> borrowDtos = new ArrayList<>();
-        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
+        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, TEST_COPY_ID, TEST_READER_ID);
         borrowDtos.add(borrowDto);
 
 
@@ -95,8 +96,8 @@ public class BorrowControllerTest {
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
         Copy copy = new Copy(title);
-        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
-        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
+        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS , TEST_COPY_ID, TEST_READER_ID);
 
         when(borrowService.getBorrow(TEST_ID)).thenReturn(borrow);
         when(borrowMapper.mapToBorrowDto(borrow)).thenReturn(borrowDto);
@@ -117,8 +118,8 @@ public class BorrowControllerTest {
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
         Copy copy = new Copy(title);
-        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
-        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_COPY_ID, TEST_READER_ID);
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
+        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, TEST_COPY_ID, TEST_READER_ID);
 
         when(borrowService.getBorrow(TEST_ID)).thenReturn(borrow);
         when(borrowMapper.mapToBorrowDto(borrow)).thenReturn(borrowDto);
@@ -147,7 +148,7 @@ public class BorrowControllerTest {
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
         Copy copy = new Copy(title);
-        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, copy, reader);
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
         SavedBorrowDto borrowDto = new SavedBorrowDto(TEST_COPY_ID, TEST_READER_ID);
 
         when(borrowMapper.mapToBorrow(borrowDto)).thenReturn(borrow);

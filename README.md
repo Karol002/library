@@ -63,6 +63,8 @@ Below, after expanding the collapsed section you can find a Project Specificatio
  - Borrows:
   
    * Show all borrows
+
+   * Show all borrows for selected reader
   
    * Show single borrow
   
@@ -140,6 +142,8 @@ CREATE TABLE BORROWS (
     BORROW_DATE DATE NOT NULL,
     
     RETURN_DATE DATE,
+
+    CLOSED BOOLEAN NOT NULL,
     
     COPY_ID BIGINT NOT NULL,
     

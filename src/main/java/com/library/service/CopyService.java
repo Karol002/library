@@ -1,6 +1,6 @@
 package com.library.service;
 
-import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.single.CopyNotFoundException;
 import com.library.domain.Copy;
 import com.library.repository.CopyRepository;
 import lombok.RequiredArgsConstructor;

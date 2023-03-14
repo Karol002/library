@@ -1,9 +1,6 @@
 package com.library.service;
 
-import com.library.controller.exception.BorrowNotFoundException;
-import com.library.controller.exception.OpenBorrowException;
-import com.library.controller.exception.CopyIsBorrowedException;
-import com.library.controller.exception.CopyNotFoundException;
+import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +20,11 @@ public class BorrowService {
         return borrowRepository.getAllBorrows();
     }
 
+    public List<Borrow> getAllBorrowsByReaderId(Long readerId) {
+          return borrowRepository.getAllBorrowsByReaderId(readerId);
+    }
+
+
     public Borrow getBorrow(Long id) throws BorrowNotFoundException {
         return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }
@@ -39,6 +41,7 @@ public class BorrowService {
     public Borrow returnCopy(final Borrow borrow) {
         copyService.returnCopy(borrow.getCopy());
         borrow.setReturnDate(LocalDate.now());
+        borrow.setClosed(true);
         return borrowRepository.save(borrow);
     }
 
