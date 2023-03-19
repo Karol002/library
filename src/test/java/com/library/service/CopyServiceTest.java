@@ -8,6 +8,7 @@ import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,11 @@ public class CopyServiceTest {
     @Autowired
     private Deleter deleter;
 
+    @AfterEach
+    public void clean() {
+        deleter.deleteAllFromEachEntity();
+    }
+
     @Test
     void testFindAllCopies() {
         //Given
@@ -51,10 +57,6 @@ public class CopyServiceTest {
 
         //Then
         assertEquals(2, copies);
-
-        //CleanUp
-        deleter.deleteFromCopies();
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -75,10 +77,6 @@ public class CopyServiceTest {
         //Then
         assertEquals(firstCopy.getId(), testCopy1.getId());
         assertEquals(secondCopy.getId(), testCopy2.getId());
-
-        //CleanUp
-        deleter.deleteFromCopies();
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -100,10 +98,6 @@ public class CopyServiceTest {
         //Then
         assertEquals(1, copies.size());
         assertEquals(secondCopyId, secondCopy.getId());
-
-        //CleanUp
-        deleter.deleteFromCopies();
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -125,10 +119,6 @@ public class CopyServiceTest {
         //Then
         assertEquals(2, copiesSizeBeforeDelete);
         assertEquals(0, copiesSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteFromCopies();
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -158,8 +148,5 @@ public class CopyServiceTest {
         //Then
         assertEquals(2, copiesSizeBeforeDelete);
         assertEquals(2, copiesSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 }

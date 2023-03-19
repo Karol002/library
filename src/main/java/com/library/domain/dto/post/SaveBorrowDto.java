@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SavedReaderDto {
-    private String firstName;
-    private String lastName;
+public class SaveBorrowDto {
+    private Long copyId;
+    private Long readerId;
 }

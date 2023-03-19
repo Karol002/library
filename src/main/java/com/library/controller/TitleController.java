@@ -3,7 +3,7 @@ package com.library.controller;
 import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Title;
 import com.library.domain.dto.TitleDto;
-import com.library.domain.dto.post.SavedTitleDto;
+import com.library.domain.dto.post.SaveTitleDto;
 import com.library.mapper.TitleMapper;
 import com.library.service.TitleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,8 +55,8 @@ public class TitleController {
 
     @Operation(summary = "Add new title")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createTitle(@RequestBody SavedTitleDto savedTitleDto) {
-        Title title = titleMapper.mapToTitle(savedTitleDto);
+    public ResponseEntity<Void> createTitle(@RequestBody SaveTitleDto saveTitleDto) {
+        Title title = titleMapper.mapToTitle(saveTitleDto);
         titleService.saveTitle(title);
         return ResponseEntity.ok().build();
     }

@@ -26,7 +26,7 @@ public class CopyService {
     }
 
     public void deleteCopy(Long id) throws CopyNotFoundException {
-        if (copyRepository.getCopy(id).isPresent()) {
+        if (copyRepository.existsById(id)) {
             copyRepository.deleteById(id);
         } else throw new CopyNotFoundException();
     }

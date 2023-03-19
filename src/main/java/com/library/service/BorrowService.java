@@ -6,6 +6,7 @@ import com.library.repository.BorrowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +30,18 @@ public class BorrowService {
         return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }
 
+    @Transactional
     public void deleteBorrow(Long id) throws BorrowNotFoundException, CopyNotFoundException, OpenBorrowException {
-        if (borrowRepository.getBorrow(id).isPresent()) {
-            Optional<Borrow> borrow = borrowRepository.getBorrow(id);
+        Optional<Borrow> borrow = borrowRepository.getBorrow(id);
+
+        if (borrow.isPresent()) {
             if (copyService.isCopyAvailable(borrow.get().getCopy().getId())) {
                 borrowRepository.deleteById(id);
             } else throw new OpenBorrowException();
         } else throw new BorrowNotFoundException();
     }
 
+    @Transactional
     public Borrow returnCopy(final Borrow borrow) {
         copyService.returnCopy(borrow.getCopy());
         borrow.setReturnDate(LocalDate.now());
@@ -45,6 +49,7 @@ public class BorrowService {
         return borrowRepository.save(borrow);
     }
 
+    @Transactional
     public void saveBorrow(final Borrow borrow) throws CopyNotFoundException, CopyIsBorrowedException {
         if (copyService.isCopyAvailable(borrow.getCopy().getId())) {
             copyService.borrowCopy(borrow.getCopy());

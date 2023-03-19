@@ -22,13 +22,13 @@ public class TitleService {
     }
 
     public void deleteTitle(Long id) throws TitleNotFoundException {
-        if (titleRepository.getTitle(id).isPresent()) {
+        if (titleRepository.existsById(id)) {
             titleRepository.deleteById(id);
         } else throw new TitleNotFoundException();
     }
 
     public Title updateTitle(final  Title title) throws TitleNotFoundException {
-        if (titleRepository.getTitle(title.getId()).isEmpty()) throw new TitleNotFoundException();
+        if (!titleRepository.existsById(title.getId())) throw new TitleNotFoundException();
         return titleRepository.save(title);
     }
 

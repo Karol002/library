@@ -2,7 +2,7 @@ package com.library.mapper;
 
 import com.library.domain.Title;
 import com.library.domain.dto.TitleDto;
-import com.library.domain.dto.post.SavedTitleDto;
+import com.library.domain.dto.post.SaveTitleDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 public class TitleMapper {
 
-    public Title mapToTitle(final SavedTitleDto savedTitleDto) {
+    public Title mapToTitle(final SaveTitleDto saveTitleDto) {
         return new Title(
-                savedTitleDto.getAuthor(),
-                savedTitleDto.getTitle(),
-                savedTitleDto.getPublicationDate()
+                saveTitleDto.getAuthor(),
+                saveTitleDto.getTitle(),
+                saveTitleDto.getPublicationDate()
         );
     }
 

@@ -8,7 +8,7 @@ import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
 import com.library.domain.dto.BorrowDto;
-import com.library.domain.dto.post.SavedBorrowDto;
+import com.library.domain.dto.post.SaveBorrowDto;
 import com.library.mapper.BorrowMapper;
 import com.library.service.BorrowService;
 import com.library.service.CopyService;
@@ -149,7 +149,7 @@ public class BorrowControllerTest {
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
         Copy copy = new Copy(title);
         Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
-        SavedBorrowDto borrowDto = new SavedBorrowDto(TEST_COPY_ID, TEST_READER_ID);
+        SaveBorrowDto borrowDto = new SaveBorrowDto(TEST_COPY_ID, TEST_READER_ID);
 
         when(borrowMapper.mapToBorrow(borrowDto)).thenReturn(borrow);
         when(copyService.isCopyAvailable(TEST_COPY_ID)).thenReturn(true);

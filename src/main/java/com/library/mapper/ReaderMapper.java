@@ -2,7 +2,7 @@ package com.library.mapper;
 
 import com.library.domain.Reader;
 import com.library.domain.dto.ReaderDto;
-import com.library.domain.dto.post.SavedReaderDto;
+import com.library.domain.dto.post.SaveReaderDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.List;
 @Service
 public class ReaderMapper {
 
-    public Reader mapToReader(final SavedReaderDto savedReaderDto) {
+    public Reader mapToReader(final SaveReaderDto saveReaderDto) {
         return new Reader(
-                savedReaderDto.getFirstName(),
-                savedReaderDto.getLastName()
+                saveReaderDto.getFirstName(),
+                saveReaderDto.getLastName()
         );
     }
 

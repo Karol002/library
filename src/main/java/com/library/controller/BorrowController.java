@@ -3,7 +3,7 @@ package com.library.controller;
 import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
-import com.library.domain.dto.post.SavedBorrowDto;
+import com.library.domain.dto.post.SaveBorrowDto;
 import com.library.mapper.BorrowMapper;
 import com.library.service.BorrowService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -62,8 +62,8 @@ public class BorrowController {
 
     @Operation(summary = "Borrow single copy")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createBorrow(@RequestBody SavedBorrowDto savedBorrowDto) throws ReaderNotFoundException, CopyNotFoundException, CopyIsBorrowedException {
-        Borrow borrow = borrowMapper.mapToBorrow(savedBorrowDto);
+    public ResponseEntity<Void> createBorrow(@RequestBody SaveBorrowDto saveBorrowDto) throws ReaderNotFoundException, CopyNotFoundException, CopyIsBorrowedException {
+        Borrow borrow = borrowMapper.mapToBorrow(saveBorrowDto);
         borrowService.saveBorrow(borrow);
         return ResponseEntity.ok().build();
     }

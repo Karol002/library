@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.library.config.LocalDateAdapter;
 import com.library.domain.Reader;
 import com.library.domain.dto.ReaderDto;
-import com.library.domain.dto.post.SavedReaderDto;
+import com.library.domain.dto.post.SaveReaderDto;
 import com.library.mapper.ReaderMapper;
 import com.library.service.ReaderService;
 import org.junit.jupiter.api.Test;
@@ -116,7 +116,7 @@ public class ReaderControllerTest {
     @Test
     void shouldCreateReader() throws Exception {
         //Given
-        SavedReaderDto readerDto = new SavedReaderDto(TEST_FIRST_NAME, TEST_LAST_NAME);
+        SaveReaderDto readerDto = new SaveReaderDto(TEST_FIRST_NAME, TEST_LAST_NAME);
         Reader reader = new Reader(TEST_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
 
         when(readerMapper.mapToReader(readerDto)).thenReturn(reader);

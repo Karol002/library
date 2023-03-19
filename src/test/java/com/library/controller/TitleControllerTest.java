@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.library.config.LocalDateAdapter;
 import com.library.domain.Title;
 import com.library.domain.dto.TitleDto;
-import com.library.domain.dto.post.SavedTitleDto;
+import com.library.domain.dto.post.SaveTitleDto;
 import com.library.mapper.TitleMapper;
 import com.library.service.TitleService;
 import org.junit.jupiter.api.Test;
@@ -116,7 +116,7 @@ public class TitleControllerTest {
     @Test
     void shouldCreateTitle() throws Exception {
         //Given
-        SavedTitleDto titleDto = new SavedTitleDto(TEST_TITLE, TEST_AUTHOR, TEST_DATE);
+        SaveTitleDto titleDto = new SaveTitleDto(TEST_TITLE, TEST_AUTHOR, TEST_DATE);
         Title title = new Title(TEST_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
 
         when(titleMapper.mapToTitle(titleDto)).thenReturn(title);

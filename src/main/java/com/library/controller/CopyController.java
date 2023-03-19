@@ -4,7 +4,7 @@ import com.library.controller.exception.single.CopyNotFoundException;
 import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
-import com.library.domain.dto.post.SavedCopyDto;
+import com.library.domain.dto.post.SaveCopyDto;
 import com.library.mapper.CopyMapper;
 import com.library.service.CopyService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +54,7 @@ public class CopyController {
     @Operation(summary = "Add new copy by given title id")
     @PostMapping(value = "{titleId}")
     public ResponseEntity<Void> createCopy(@PathVariable Long titleId) throws TitleNotFoundException {
-        Copy copy = copyMapper.mapToCopy(new SavedCopyDto(titleId));
+        Copy copy = copyMapper.mapToCopy(new SaveCopyDto(titleId));
         copyService.saveCopy(copy);
         return ResponseEntity.ok().build();
     }

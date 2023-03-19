@@ -9,6 +9,7 @@ import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +37,11 @@ public class BorrowServiceTest {
     @Autowired
     private Deleter deleter;
 
+    @AfterEach
+    public void clean() {
+        deleter.deleteAllFromEachEntity();
+    }
+
     @Test
     void testFindAllBorrows() throws CopyNotFoundException, CopyIsBorrowedException {
         //Given
@@ -60,9 +66,6 @@ public class BorrowServiceTest {
 
         //Then
         assertEquals(2, borrows);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -91,9 +94,6 @@ public class BorrowServiceTest {
         //Then
         assertEquals(firstBorrow.getId(), firstBorrowTest.getId());
         assertEquals(secondBorrow.getId(), secondBorrowTest.getId());
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -123,9 +123,6 @@ public class BorrowServiceTest {
         //Then
         assertEquals(1, borrows.size());
         assertEquals(firstBorrow.getId(), borrows.get(0).getId());
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -155,9 +152,6 @@ public class BorrowServiceTest {
         //Then
         assertEquals(2, borrowsSizeBeforeDelete);
         assertEquals(0, borrowsSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -187,9 +181,6 @@ public class BorrowServiceTest {
         //Then
         assertEquals(2, borrowsSizeBeforeDelete);
         assertEquals(0, borrowsSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -224,9 +215,6 @@ public class BorrowServiceTest {
         assertTrue(secondCopyIsNotBorrowed);
         assertFalse(firstCopyBorrowed);
         assertFalse(secondCopyBorrowed);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 
     @Test
@@ -267,8 +255,5 @@ public class BorrowServiceTest {
         assertFalse(secondCopyIsNotBorrowed);
         assertTrue(firstCopyBorrowed);
         assertTrue(secondCopyBorrowed);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 }

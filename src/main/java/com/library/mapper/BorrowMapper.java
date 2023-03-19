@@ -4,7 +4,7 @@ import com.library.controller.exception.single.CopyNotFoundException;
 import com.library.controller.exception.single.ReaderNotFoundException;
 import com.library.domain.Borrow;
 import com.library.domain.dto.BorrowDto;
-import com.library.domain.dto.post.SavedBorrowDto;
+import com.library.domain.dto.post.SaveBorrowDto;
 import com.library.service.CopyService;
 import com.library.service.ReaderService;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +18,10 @@ public class BorrowMapper {
     private final ReaderService readerService;
     private final CopyService copyService;
 
-    public Borrow mapToBorrow(SavedBorrowDto savedBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
+    public Borrow mapToBorrow(SaveBorrowDto saveBorrowDto) throws CopyNotFoundException, ReaderNotFoundException {
         return new Borrow(
-                copyService.getCopy(savedBorrowDto.getCopyId()),
-                readerService.getReader(savedBorrowDto.getReaderId())
-        );
-    }
-
-    public Borrow mapToBorrow(BorrowDto borrowDto) throws CopyNotFoundException, ReaderNotFoundException {
-        return new Borrow(
-                borrowDto.getId(),
-                borrowDto.getBorrowDate(),
-                borrowDto.getReturnDate(),
-                borrowDto.isClosed(),
-                copyService.getCopy(borrowDto.getCopyId()),
-                readerService.getReader(borrowDto.getReaderId())
+                copyService.getCopy(saveBorrowDto.getCopyId()),
+                readerService.getReader(saveBorrowDto.getReaderId())
         );
     }
 

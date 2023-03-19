@@ -1,6 +1,5 @@
 package com.library.service;
 
-import com.library.controller.exception.single.OpenBorrowException;
 import com.library.controller.exception.single.ReaderHaveBorrowedCopy;
 import com.library.controller.exception.single.ReaderNotFoundException;
 import com.library.domain.Borrow;
@@ -27,9 +26,7 @@ public class ReaderService {
     }
 
     public void deleteReader(Long id) throws ReaderNotFoundException,ReaderHaveBorrowedCopy {
-        Optional<Reader> reader = readerRepository.getReader(id);
-
-        if (reader.isPresent()) {
+        if (readerRepository.existsById(id)) {
             if (!haveOpenBorrows(id)) {
                 readerRepository.deleteById(id);
             } else throw new ReaderHaveBorrowedCopy();
@@ -37,22 +34,19 @@ public class ReaderService {
     }
 
     private boolean haveOpenBorrows(Long id) {
-        boolean hasOpenBorrows = false;
-
         List<Borrow> borrows = borrowService.getAllBorrowsByReaderId(id);
         if (!borrows.isEmpty()) {
             for (Borrow borrow : borrows) {
                 if (!borrow.isClosed()) {
-                    hasOpenBorrows = true;
-                    break;
+                    return true;
                 }
             }
         }
-        return hasOpenBorrows;
+        return false;
     }
 
     public Reader updateReader(final Reader reader) throws ReaderNotFoundException {
-        if (readerRepository.getReader(reader.getId()).isEmpty()) throw new ReaderNotFoundException();
+        if (readerRepository.existsById(reader.getId())) throw new ReaderNotFoundException();
         return readerRepository.save(reader);
     }
 

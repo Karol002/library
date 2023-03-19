@@ -37,7 +37,7 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(OpenBorrowException.class)
     public ResponseEntity<Object> handleOpenBorrowException(CopyIsBorrowedException exception) {
-        return new ResponseEntity<>("Copy is not returned, can not delete borrow", HttpStatus.CONFLICT;
+        return new ResponseEntity<>("Copy is not returned, can not delete borrow", HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(ReaderHaveBorrowedCopy.class)

@@ -4,6 +4,7 @@ import com.library.config.Deleter;
 import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.Title;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,11 @@ public class TitleServiceTest {
 
     @Autowired
     private Deleter deleter;
+
+    @AfterEach
+    public void clean() {
+        deleter.deleteAllFromEachEntity();
+    }
 
     @Test
     void testFindBookById() throws TitleNotFoundException {
@@ -49,9 +55,6 @@ public class TitleServiceTest {
         assertEquals(humanKindId, testBook1.getId());
         assertEquals(greekMythsId, testBook2.getId());
         assertEquals(chineseId, testBook3.getId());
-
-        //CleanUp
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -70,9 +73,6 @@ public class TitleServiceTest {
 
         //Then
         assertEquals(3, books);
-
-        //CleanUp
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -99,9 +99,6 @@ public class TitleServiceTest {
         //Then
         assertEquals(1, books.size());
         assertEquals(humanKindId, books.get(0).getId());
-
-        //CleanUp
-        deleter.deleteFromTitles();
     }
 
     @Test
@@ -123,9 +120,5 @@ public class TitleServiceTest {
         //Then
         assertEquals(1, titlesSizeBeforeDelete);
         assertEquals(1, titlesSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteFromCopies();
-        deleter.deleteFromTitles();
     }
 }

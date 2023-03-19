@@ -1,11 +1,10 @@
 package com.library.controller;
 
-import com.library.controller.exception.single.OpenBorrowException;
 import com.library.controller.exception.single.ReaderHaveBorrowedCopy;
 import com.library.controller.exception.single.ReaderNotFoundException;
 import com.library.domain.Reader;
 import com.library.domain.dto.ReaderDto;
-import com.library.domain.dto.post.SavedReaderDto;
+import com.library.domain.dto.post.SaveReaderDto;
 import com.library.mapper.ReaderMapper;
 import com.library.service.ReaderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,8 +56,8 @@ public class ReaderController {
 
     @Operation(summary = "Add new reader")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createReader(@RequestBody SavedReaderDto savedReaderDto) {
-        Reader reader = readerMapper.mapToReader(savedReaderDto);
+    public ResponseEntity<Void> createReader(@RequestBody SaveReaderDto saveReaderDto) {
+        Reader reader = readerMapper.mapToReader(saveReaderDto);
         readerService.saveReader(reader);
         return ResponseEntity.ok().build();
     }

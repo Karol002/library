@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class SavedTitleDto {
+public class SaveTitleDto {
     private String title;
     private String author;
     private LocalDate publicationDate;

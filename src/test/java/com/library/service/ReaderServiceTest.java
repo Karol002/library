@@ -6,6 +6,7 @@ import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +35,11 @@ public class ReaderServiceTest {
     @Autowired
     private Deleter deleter;
 
+    @AfterEach
+    public void clean() {
+        deleter.deleteAllFromEachEntity();
+    }
+
 
     @Test
     void testFindReaderById() throws ReaderNotFoundException {
@@ -59,9 +65,6 @@ public class ReaderServiceTest {
         assertEquals(robJohnsonId, testReader1.getId());
         assertEquals(christianSmithId, testReader2.getId());
         assertEquals(kimJacksonId, testReader3.getId());
-
-        //CleanUp
-        deleter.deleteFromReaders();
     }
 
     @Test
@@ -80,9 +83,6 @@ public class ReaderServiceTest {
 
         //Then
         assertEquals(3, readers);
-
-        //CleanUp
-        deleter.deleteFromReaders();
     }
 
     @Test
@@ -109,9 +109,6 @@ public class ReaderServiceTest {
         //Then
         assertEquals(1, readers.size());
         assertEquals(robJohnsonId, readers.get(0).getId());
-
-        //CleanUp
-        deleter.deleteFromReaders();
     }
 
     @Test
@@ -141,8 +138,5 @@ public class ReaderServiceTest {
         //Then
         assertEquals(2, readersSizeBeforeDelete);
         assertEquals(2, readersSizeAfterDelete);
-
-        //CleanUp
-        deleter.deleteAllFromEachEntity();
     }
 }

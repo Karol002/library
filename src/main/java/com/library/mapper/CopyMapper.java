@@ -3,7 +3,7 @@ package com.library.mapper;
 import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Copy;
 import com.library.domain.dto.CopyDto;
-import com.library.domain.dto.post.SavedCopyDto;
+import com.library.domain.dto.post.SaveCopyDto;
 import com.library.service.TitleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ import java.util.List;
 public class CopyMapper {
     private final TitleService titleService;
 
-    public Copy mapToCopy(final SavedCopyDto savedCopyDto) throws TitleNotFoundException {
-        return new Copy(titleService.getTitle(savedCopyDto.getTitleId()));
+    public Copy mapToCopy(final SaveCopyDto saveCopyDto) throws TitleNotFoundException {
+        return new Copy(titleService.getTitle(saveCopyDto.getTitleId()));
     }
 
     public Copy mapToCopy(final CopyDto copyDto) throws TitleNotFoundException {
