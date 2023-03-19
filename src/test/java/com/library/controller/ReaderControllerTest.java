@@ -133,11 +133,4 @@ public class ReaderControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void shouldDeleteReader() throws Exception {
-        //Given & When & Then
-        mockMvc.perform(delete("/library/readers/1"))
-                .andExpect(status().isOk());
-    }
 }

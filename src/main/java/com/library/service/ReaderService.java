@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +45,7 @@ public class ReaderService {
     }
 
     public Reader updateReader(final Reader reader) throws ReaderNotFoundException {
-        if (readerRepository.existsById(reader.getId())) throw new ReaderNotFoundException();
+        if (!readerRepository.existsById(reader.getId())) throw new ReaderNotFoundException();
         return readerRepository.save(reader);
     }
 

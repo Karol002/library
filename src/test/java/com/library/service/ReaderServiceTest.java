@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
@@ -138,5 +139,39 @@ public class ReaderServiceTest {
         //Then
         assertEquals(2, readersSizeBeforeDelete);
         assertEquals(2, readersSizeAfterDelete);
+    }
+
+    @Test
+    void shouldThrowReaderNotFoundException() {
+        //Given
+        Reader saveReader = new Reader("Rob", "Johnson");
+        readerService.saveReader(saveReader);
+
+        Long falseId = saveReader.getId() + 1;
+        Reader unSaveReader = new Reader(falseId, "Christian", "Smith", LocalDate.now());
+
+        //When & Then
+        assertThrows(ReaderNotFoundException.class, () -> readerService.getReader(falseId));
+        assertThrows(ReaderNotFoundException.class, () -> readerService.deleteReader(falseId));
+        assertThrows(ReaderNotFoundException.class, () -> readerService.updateReader(unSaveReader));
+    }
+
+    @Test
+    void shouldThrowReaderHaveBorrowedCopyException() throws CopyNotFoundException, CopyIsBorrowedException {
+        //Given
+        Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Reader robJohnson = new Reader( "Rob", "Johnson");
+        Copy copy = new Copy(humanKind);
+        Borrow borrow = new Borrow(copy, robJohnson);
+
+        readerService.saveReader(robJohnson);
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(copy);
+        borrowService.saveBorrow(borrow);
+
+        Long id = robJohnson.getId();
+
+        //When & Then
+        assertThrows(ReaderHaveBorrowedCopy.class, () -> readerService.deleteReader(id));
     }
 }

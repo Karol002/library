@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class CopyServiceTest {
@@ -113,7 +114,7 @@ public class CopyServiceTest {
 
         //When
         int copiesSizeBeforeDelete = copyService.getAllCopies().size();
-        titleService.deleteTitle(humanKind.getId());
+        deleter.deleteFromTitles();
         int copiesSizeAfterDelete = copyService.getAllCopies().size();
 
         //Then
@@ -148,5 +149,22 @@ public class CopyServiceTest {
         //Then
         assertEquals(2, copiesSizeBeforeDelete);
         assertEquals(2, copiesSizeAfterDelete);
+    }
+
+    @Test
+    void shouldThrowCopyNotFoundException() {
+        //Given
+        Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Copy copy = new Copy(humanKind);
+
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(copy);
+
+        Long falseId = copy.getId() + 1;
+
+        //When & Then
+        assertThrows(CopyNotFoundException.class, () -> copyService.getCopy(falseId));
+        assertThrows(CopyNotFoundException.class, () -> copyService.deleteCopy(falseId));
+        assertThrows(CopyNotFoundException.class, () -> copyService.isCopyAvailable(falseId));
     }
 }

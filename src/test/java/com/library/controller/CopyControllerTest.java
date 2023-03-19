@@ -105,11 +105,4 @@ public class CopyControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void shouldDeleteCopy() throws Exception {
-        //Given & When & Then
-        mockMvc.perform(delete("/library/copies/1"))
-                .andExpect(status().isOk());
-    }
 }

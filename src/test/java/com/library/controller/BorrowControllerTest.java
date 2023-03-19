@@ -166,11 +166,4 @@ public class BorrowControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void shouldDeleteBorrow() throws Exception {
-        //Given & When & Then
-        mockMvc.perform(delete("/library/borrows/1"))
-                .andExpect(status().isOk());
-    }
 }

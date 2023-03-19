@@ -6,6 +6,7 @@ import com.library.domain.Copy;
 import com.library.domain.Title;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class TitleServiceTest {
@@ -120,5 +122,20 @@ public class TitleServiceTest {
         //Then
         assertEquals(1, titlesSizeBeforeDelete);
         assertEquals(1, titlesSizeAfterDelete);
+    }
+
+    @Test
+    void shouldThrowTitleNotFoundException() {
+        //Given
+        Title saveTitle = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        titleService.saveTitle(saveTitle);
+
+        Long falseId = saveTitle.getId() + 1;
+        Title unSaveTitle = new Title(falseId, "GREEK MYTHS", "JAN LEWIS", LocalDate.of(2010, 11, 16));
+
+        //When & Then
+        assertThrows(TitleNotFoundException.class, () -> titleService.getTitle(falseId));
+        assertThrows(TitleNotFoundException.class, () -> titleService.deleteTitle(falseId));
+        assertThrows(TitleNotFoundException.class, () -> titleService.updateTitle(unSaveTitle));
     }
 }

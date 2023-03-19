@@ -31,7 +31,9 @@ public class CopyService {
         } else throw new CopyNotFoundException();
     }
 
-    public void saveCopy(final Copy copy) { copyRepository.save(copy); }
+    public void saveCopy(final Copy copy) {
+        copyRepository.save(copy);
+    }
 
     public void borrowCopy(final Copy copy) {
         copy.setBorrowed(true);

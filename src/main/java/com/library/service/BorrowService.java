@@ -25,7 +25,6 @@ public class BorrowService {
           return borrowRepository.getAllBorrowsByReaderId(readerId);
     }
 
-
     public Borrow getBorrow(Long id) throws BorrowNotFoundException {
         return borrowRepository.getBorrow(id).orElseThrow(BorrowNotFoundException::new);
     }

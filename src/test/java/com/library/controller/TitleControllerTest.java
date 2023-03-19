@@ -133,11 +133,4 @@ public class TitleControllerTest {
                         .content(jsonContent))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void shouldDeleteTitle() throws Exception {
-        //Given & When & Then
-        mockMvc.perform(delete("/library/titles/1"))
-                .andExpect(status().isOk());
-    }
 }

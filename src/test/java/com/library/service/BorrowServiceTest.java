@@ -1,10 +1,7 @@
 package com.library.service;
 
 import com.library.config.Deleter;
-import com.library.controller.exception.single.BorrowNotFoundException;
-import com.library.controller.exception.single.CopyIsBorrowedException;
-import com.library.controller.exception.single.CopyNotFoundException;
-import com.library.controller.exception.single.OpenBorrowException;
+import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
@@ -255,5 +252,69 @@ public class BorrowServiceTest {
         assertFalse(secondCopyIsNotBorrowed);
         assertTrue(firstCopyBorrowed);
         assertTrue(secondCopyBorrowed);
+    }
+
+    @Test
+    void shouldThrowBorrowNotFoundException() throws CopyNotFoundException, CopyIsBorrowedException {
+        //Given
+        Title humanKind = new Title( "HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Reader robJohnson = new Reader( "Rob", "Johnson");
+        Reader christianSmith = new Reader( "Christian", "Smith");
+        Copy firstCopy = new Copy(humanKind);
+        Copy secondCopy = new Copy(humanKind);
+        Borrow saveBorrow = new Borrow(firstCopy, robJohnson);
+
+        readerService.saveReader(robJohnson);
+        readerService.saveReader(christianSmith);
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(firstCopy);
+        copyService.saveCopy(secondCopy);
+        borrowService.saveBorrow(saveBorrow);
+
+        Long falseId = saveBorrow.getId() + 1;
+
+        //When & Then
+        assertThrows(BorrowNotFoundException.class, () -> borrowService.getBorrow(falseId));
+        assertThrows(BorrowNotFoundException.class, () -> borrowService.deleteBorrow(falseId));
+    }
+
+    @Test
+    void shouldThrowOpenBorrowException() throws CopyNotFoundException, CopyIsBorrowedException {
+        //Given
+        Title humanKind = new Title("HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Reader robJohnson = new Reader("Rob", "Johnson");
+        Copy copy = new Copy(humanKind);
+        Borrow borrow = new Borrow(copy, robJohnson);
+
+        readerService.saveReader(robJohnson);
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(copy);
+        borrowService.saveBorrow(borrow);
+
+        Long id = borrow.getId();
+
+        //When & Then
+        assertThrows(OpenBorrowException.class, () -> borrowService.deleteBorrow(id));
+    }
+
+    @Test
+    void shouldThrowCopyIsBorrowedException() throws CopyNotFoundException, CopyIsBorrowedException {
+        //Given
+        Title humanKind = new Title("HumanKind", "Rutger Bregman", LocalDate.of(2000, 12, 12));
+        Reader robJohnson = new Reader("Rob", "Johnson");
+        Reader christianSmith = new Reader( "Christian", "Smith");
+        Copy copy = new Copy(humanKind);
+        Borrow borrow = new Borrow(copy, robJohnson);
+
+        readerService.saveReader(robJohnson);
+        readerService.saveReader(christianSmith);
+        titleService.saveTitle(humanKind);
+        copyService.saveCopy(copy);
+        borrowService.saveBorrow(borrow);
+
+        Borrow incorrectBorrow = new Borrow(copy, christianSmith);
+
+        //When & Then
+        assertThrows(CopyIsBorrowedException.class, () -> borrowService.saveBorrow(incorrectBorrow));
     }
 }
