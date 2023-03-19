@@ -3,11 +3,13 @@ package com.library.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.library.config.LocalDateAdapter;
+import com.library.controller.exception.single.*;
 import com.library.domain.Borrow;
 import com.library.domain.Copy;
 import com.library.domain.Reader;
 import com.library.domain.Title;
 import com.library.domain.dto.BorrowDto;
+import com.library.domain.dto.TitleDto;
 import com.library.domain.dto.post.SaveBorrowDto;
 import com.library.mapper.BorrowMapper;
 import com.library.service.BorrowService;
@@ -26,6 +28,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -91,6 +94,35 @@ public class BorrowControllerTest {
     }
 
     @Test
+    void shouldFetchBorrowsForSelectedReader() throws Exception {
+        //Given
+        Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
+        Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
+        Copy copy = new Copy(title);
+
+        List<Borrow> borrows = new ArrayList<>();
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
+        borrows.add(borrow);
+        List<BorrowDto> borrowDtos = new ArrayList<>();
+        BorrowDto borrowDto = new BorrowDto(TEST_ID, TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, TEST_COPY_ID, TEST_READER_ID);
+        borrowDtos.add(borrowDto);
+
+
+        when(borrowService.getAllBorrowsByReaderId(TEST_READER_ID)).thenReturn(borrows);
+        when(borrowMapper.mapToBorrowDtoList(borrows)).thenReturn(borrowDtos);
+
+        //When & Then
+        mockMvc.perform(get("/library/borrows/reader/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].copyId", is(1)))
+                .andExpect(jsonPath("$[0].readerId", is(1)))
+                .andExpect(jsonPath("$[0].borrowDate", is(TEST_BORROW_DATE.toString())))
+                .andExpect(jsonPath("$[0].returnDate", is(TEST_RETURN_DATE.toString())));
+    }
+
+    @Test
     void shouldFetchBorrow() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
@@ -113,7 +145,7 @@ public class BorrowControllerTest {
     }
 
     @Test
-    void shouldReturnBorrow() throws Exception {
+    void shouldReturnCopy() throws Exception {
         //Given
         Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
         Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
@@ -124,11 +156,6 @@ public class BorrowControllerTest {
         when(borrowService.getBorrow(TEST_ID)).thenReturn(borrow);
         when(borrowMapper.mapToBorrowDto(borrow)).thenReturn(borrowDto);
         when(borrowService.returnCopy(borrow)).thenReturn(borrow);
-
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
-                .create();
-        String jsonContent = gson.toJson(borrowDto);
 
         //When & Then
         mockMvc.perform(put("/library/borrows/return/1")
@@ -165,5 +192,109 @@ public class BorrowControllerTest {
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldThrowBorrowNotFoundException() throws Exception {
+        //Given
+        SaveBorrowDto borrowDto = new SaveBorrowDto(TEST_COPY_ID, TEST_READER_ID);
+
+        when(borrowService.getBorrow(TEST_ID)).thenThrow(BorrowNotFoundException.class);
+        doThrow(BorrowNotFoundException.class).when(borrowService).deleteBorrow(TEST_ID);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(borrowDto);
+
+        //When & Then
+        mockMvc.perform(put("/library/borrows/return/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(get("/library/borrows/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(delete("/library/borrows/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldThrowCopyNotFoundException() throws Exception {
+        //Given
+        SaveBorrowDto borrowDto = new SaveBorrowDto(TEST_COPY_ID, TEST_READER_ID);
+
+        when(borrowMapper.mapToBorrow(borrowDto)).thenThrow(CopyNotFoundException.class);
+        doThrow(BorrowNotFoundException.class).when(borrowService).deleteBorrow(TEST_ID);
+
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(borrowDto);
+
+        //When & Then
+        mockMvc.perform(post("/library/borrows/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(delete("/library/borrows/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldThrowReaderNotFoundException() throws Exception {
+        //Given
+        SaveBorrowDto saveBorrowDto = new SaveBorrowDto(TEST_COPY_ID, TEST_READER_ID);
+        when(borrowMapper.mapToBorrow(saveBorrowDto)).thenThrow(ReaderNotFoundException.class);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(saveBorrowDto);
+
+        //When & Then
+        mockMvc.perform(post("/library/borrows/").contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldThrowCopyIsBorrowedException() throws Exception {
+        //Given
+        Title title = new Title(TEST_TITLE_ID, TEST_TITLE, TEST_AUTHOR, TEST_PUBLICATION_DATE);
+        Reader reader = new Reader(TEST_READER_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
+        Copy copy = new Copy(title);
+        Borrow borrow = new Borrow(TEST_BORROW_DATE, TEST_RETURN_DATE, TEST_BORROW_STATUS, copy, reader);
+        SaveBorrowDto borrowDto = new SaveBorrowDto(TEST_COPY_ID, TEST_READER_ID);
+
+        when(borrowMapper.mapToBorrow(borrowDto)).thenReturn(borrow);
+        doThrow(CopyIsBorrowedException.class).when(borrowService).saveBorrow(borrow);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(borrowDto);
+
+        //When & Then
+        mockMvc.perform(post("/library/borrows/").contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void shouldThrowOpenBorrowException() throws Exception {
+        //Given
+        doThrow(OpenBorrowException.class).when(borrowService).deleteBorrow(TEST_ID);
+
+        //When & Then
+        mockMvc.perform(delete("/library/borrows/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
     }
 }

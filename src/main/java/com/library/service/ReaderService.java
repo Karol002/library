@@ -8,6 +8,7 @@ import com.library.repository.ReaderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -24,6 +25,7 @@ public class ReaderService {
         return readerRepository.getReader(id).orElseThrow(ReaderNotFoundException::new);
     }
 
+    @Transactional
     public void deleteReader(Long id) throws ReaderNotFoundException,ReaderHaveBorrowedCopy {
         if (readerRepository.existsById(id)) {
             if (!haveOpenBorrows(id)) {

@@ -3,8 +3,13 @@ package com.library.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.library.config.LocalDateAdapter;
+import com.library.controller.exception.single.ReaderHaveBorrowedCopy;
+import com.library.controller.exception.single.ReaderNotFoundException;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Reader;
+import com.library.domain.Title;
 import com.library.domain.dto.ReaderDto;
+import com.library.domain.dto.TitleDto;
 import com.library.domain.dto.post.SaveReaderDto;
 import com.library.mapper.ReaderMapper;
 import com.library.service.ReaderService;
@@ -22,6 +27,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -132,5 +138,45 @@ public class ReaderControllerTest {
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldThrowReaderNotFoundException() throws Exception {
+        //Given
+        ReaderDto readerDto = new ReaderDto(TEST_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
+        Reader reader = new Reader(TEST_ID, TEST_FIRST_NAME, TEST_LAST_NAME, TEST_SIGN_UP_DATE);
+
+        when(readerMapper.mapToReader(readerDto)).thenReturn(reader);
+        when(readerService.updateReader(reader)).thenThrow(ReaderNotFoundException.class);
+        when(readerService.getReader(TEST_ID)).thenThrow(ReaderNotFoundException.class);
+        doThrow(ReaderNotFoundException.class).when(readerService).deleteReader(TEST_ID);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(readerDto);
+
+        //When & Then
+        mockMvc.perform(put("/library/readers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(get("/library/readers/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(delete("/library/readers/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldThrowReaderHaveBorrowedCopyException() throws Exception {
+        //Given
+        doThrow(ReaderHaveBorrowedCopy.class).when(readerService).deleteReader(TEST_ID);
+
+        //When & Then
+        mockMvc.perform(delete("/library/readers/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
     }
 }

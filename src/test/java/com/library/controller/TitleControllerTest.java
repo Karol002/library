@@ -3,6 +3,7 @@ package com.library.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.library.config.LocalDateAdapter;
+import com.library.controller.exception.single.TitleNotFoundException;
 import com.library.domain.Title;
 import com.library.domain.dto.TitleDto;
 import com.library.domain.dto.post.SaveTitleDto;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -132,5 +134,35 @@ public class TitleControllerTest {
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldThrowTitleNotFoundException() throws Exception {
+        //Given
+        TitleDto titleDto = new TitleDto(TEST_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
+        Title title = new Title(TEST_ID, TEST_TITLE, TEST_AUTHOR, TEST_DATE);
+
+        when(titleMapper.mapToTitle(titleDto)).thenReturn(title);
+        when(titleService.getTitle(TEST_ID)).thenThrow(TitleNotFoundException.class);
+        doThrow(TitleNotFoundException.class).when(titleService).deleteTitle(TEST_ID);
+        doThrow(TitleNotFoundException.class).when(titleService).updateTitle(title);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        String jsonContent = gson.toJson(titleDto);
+
+        //When & Then
+        mockMvc.perform(put("/library/titles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(get("/library/titles/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        mockMvc.perform(delete("/library/titles/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
